@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./loginPage.css";
-import RecentLoginButton from "../recentLogin/recentLogin";
-import PasswordModal from "../passwordModal/passwordModal";
+import RecentLoginButton from "./recentLogin/recentLogin";
+import PasswordModal from "./passwordModal/passwordModal";
 
 import { initializeApp } from "firebase/app";
 

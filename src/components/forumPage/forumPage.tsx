@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { createCategories, fetchCategories } from "../../api";
+import { createCategories, createTags, fetchCategories } from "../../api";
 import { initializeApp } from "firebase/app";
 import firebaseConfig from "../../firebase";
 import { getAuth, User } from "firebase/auth";
@@ -9,7 +9,7 @@ import "./forumPage.css";
 
 import CategoriesCard from "./categoriesCard/categoriesCard";
 import NewCategoryModal from "./newCategoryModal/newCategoryModal";
-import LoginAlertModal from "../loginAlertModal/loginAlertModal";
+import LoginAlertModal from "../loginPage/loginAlertModal/loginAlertModal";
 import ForumListCategories from "./forumListCategories/forumListCategories";
 import ForumListPopular from "./forumListPopular/forumListPopular";
 
@@ -50,6 +50,7 @@ const ForumPage: React.FC = () => {
 
   const handleSubmit = async (name: string, bannerColor: string) => {
     const categoriesCardData = await createCategories(name, bannerColor);
+    await createTags(name, []);
     setNewCategory([
       ...newCategory,
       <CategoriesCard

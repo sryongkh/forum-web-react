@@ -8,7 +8,7 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import userProfilePic from "../src/assets/user.png";
 
 const app = initializeApp(firebaseConfig);
-const storage = getStorage();
+const storage = getStorage(app);
 const API_URL = "http://localhost:5000";
 
 // User's Profile
@@ -92,6 +92,21 @@ export const fetchCategories = async (
   }
 };
 
+export const getCategoryName = async (name: string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:5000/categories/${name}`
+    );
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("Error fetching topics:", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
 export const createCategories = async (name: string, bannerColor: string) => {
   try {
     const response = await axios.post(`${API_URL}/categories/create`, {
@@ -102,6 +117,41 @@ export const createCategories = async (name: string, bannerColor: string) => {
   } catch (err) {
     if (err instanceof Error) {
       console.error("From 'createCategories' in api.ts => ", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
+export const createTags = async (
+  category: string,
+  tagName: string[] | null
+) => {
+  if (tagName === null) {
+    return; // no tags to create, exit early
+  }
+  try {
+    const response = await axios.post(`${API_URL}/tags/update-tag`, {
+      category,
+      tagName,
+    });
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'createCategories' in api.ts => ", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
+export const getTags = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/tags`);
+    return response.data.tags;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'getTags' in api.ts => ", err.message);
     } else {
       console.error("Unknown error occurred:", err);
     }

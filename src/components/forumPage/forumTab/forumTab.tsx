@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createCategories } from "../../../api";
 import "./forumTab.css";
-import NewCategory from "../../newTopic/newTopic";
+import NewCategory from "../../topicPage/newTopic/newTopic";
 import NewCategoryModal from "../newCategoryModal/newCategoryModal";
 import axios from "axios";
 

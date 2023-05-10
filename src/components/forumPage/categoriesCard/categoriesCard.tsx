@@ -15,7 +15,7 @@ const CategoriesCard: React.FC<categoriesCardProps> = ({
   return (
     <div
       id="category-card"
-      className="rounded-3xl h-80 p-10 font-bold shadow-md hover:shadow-2xl cursor-pointer"
+      className="rounded-3xl h-80 p-10 font-bold shadow-md hover:shadow-2xl cursor-pointer duration-75"
       onClick={onClick}
     >
       <div

@@ -13,5 +13,22 @@
 }
 
 * {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Scroll Bar */
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--fireEngineRed);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000;
 }

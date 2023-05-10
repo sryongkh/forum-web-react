@@ -1,18 +1,31 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import NewTopicForm from "./newTopicForm/newTopicForm";
 
-import "./topicPage.css";
+import { getCategoryName, getTags } from "../../api";
 
-const TopicPage: React.FC = () => {
+import "./categoryPage.css";
+
+interface Category {
+  name: string;
+  tagName: string[];
+}
+
+interface Tag {
+  _id: string;
+  category: string;
+  tagName: string[];
+  __v: number;
+}
+
+const CategoryPage: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-
-  const [topic, setTopic] = useState<any>(null);
+  const [category, setCategory] = useState<Category | null>(null);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [bannerColor, setBannerColor] = useState<string>("");
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleNewCategoryClick = () => {
@@ -22,25 +35,29 @@ const TopicPage: React.FC = () => {
     setIsModalOpen(true);
     // }
   };
-  
-  const fetchTopic = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/categories/${name}`
-      );
-      setTopic(response.data);
-      setBannerColor(response.data.bannerColor);
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error("Error fetching topics:", err.message);
-      } else {
-        console.error("Unknown error occurred:", err);
-      }
+
+  const getCategory = async () => {
+    if (!name) {
+      return;
+    } else {
+      const categoryData = await getCategoryName(name);
+      setCategory(categoryData);
+      setBannerColor(categoryData.bannerColor);
     }
   };
-  
+
+  const getTagsName = async () => {
+    const tagsData = await getTags();
+    setTags(tagsData);
+  };
+
+  const tagCategory = tags.find((tag) => tag.category === category?.name);
+
   useEffect(() => {
-    fetchTopic();
+    console.log(tagCategory?.tagName);
+    console.log(category?.name);
+    getCategory();
+    getTagsName();
   }, [name]);
 
   return (
@@ -54,7 +71,7 @@ const TopicPage: React.FC = () => {
           <Link to="/" className="mt-6 mb-10">
             CATEGORIES
           </Link>
-          &nbsp;&nbsp;/&nbsp;&nbsp;{topic?.name.toUpperCase()}
+          &nbsp;&nbsp;/&nbsp;&nbsp;{category?.name.toUpperCase()}
         </div>
       </div>
       <div
@@ -65,10 +82,13 @@ const TopicPage: React.FC = () => {
           className="w-full h-3/5 bg-gray-400 m-8 p-8 rounded-2xl shadow-xl text-white font-bold flex flex-col justify-center"
           style={{ backgroundColor: bannerColor }}
         >
-          <div>{topic ? <h1>{topic.name}</h1> : <p>Loading...</p>}</div>
+          <div>{category ? <h1>{category.name}</h1> : <p>Loading...</p>}</div>
           <div className="flex flex-wrap text-xs">
-            <p>Computer</p>
-            <p>Data Science</p>
+            {tagCategory?.tagName
+              .slice(0, 5)
+              .map((tag: string, index: number) => (
+                <p key={index}>#{tag}&nbsp;</p>
+              ))}
           </div>
         </div>
       </div>
@@ -115,4 +135,4 @@ const TopicPage: React.FC = () => {
   );
 };
 
-export default TopicPage;
+export default CategoryPage;

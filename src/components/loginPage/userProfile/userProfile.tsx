@@ -11,14 +11,14 @@ import {
 import { initializeApp } from "firebase/app";
 // import { useNavigate } from "react-router-dom";
 import "./userProfile.css";
-import firebaseConfig from "../../firebase";
+import firebaseConfig from "../../../firebase";
 import {
   updateUserProfile,
   fetchUserProfile,
   saveUsername,
   getProfileImageURL,
-} from "../../api";
-import userProfilePic from "../../assets/user.png";
+} from "../../../api";
+import userProfilePic from "../../../assets/user.png";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);

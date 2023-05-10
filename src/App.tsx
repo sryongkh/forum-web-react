@@ -5,13 +5,13 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import { Category } from "./components/forumPage/forumPage";
 
-import TopicPage from "./components/topicPage/topicPage";
+import TopicPage from "./components/topicPage/categoryPage";
 import Header from "./components/header/header";
 import ForumPage from "./components/forumPage/forumPage";
 import LoginPage from "./components/loginPage/loginPage";
-import SignupPage from "./components/signUp/signupPage";
+import SignupPage from "./components/loginPage/signUp/signupPage";
 import ForgotPasswordPage from "./components/loginPage/forgetPasswordPage/forgetPasswordPage";
-import UserProfilePage from "./components/userProfile/userProfile";
+import UserProfilePage from "./components/loginPage/userProfile/userProfile";
 
 function App() {
   const [userEmail, setUserEmail] = useState<string | null>(null);

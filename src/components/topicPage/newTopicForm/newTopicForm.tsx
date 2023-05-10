@@ -141,7 +141,7 @@ const NewTopicForm: React.FC<NewTopicFormProps> = ({
               />
             </div>
           </div>
-          <div id="submit-button" className="pr-8 flex justify-end">
+          <div id="submit-button" className="relative pr-8 flex justify-end">
             <button
               id="btn-new-topic"
               className="h-14 px-5 rounded-md font-bold text-white"
