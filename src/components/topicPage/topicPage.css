@@ -1,0 +1,15 @@
+#categories {
+  color: var(--fireEngineRed);
+}
+
+#topic-header-card {
+  border-radius: 32px;
+}
+
+#lastest-popular {
+  color: var(--coolGray);
+}
+
+#lastest-popular a:hover {
+  color: var(--black);
+}

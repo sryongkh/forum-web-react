@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --antiFlashWhite: #edf2f4;
+  --coolGray: #8d99ae;
+  --spaceCadet: #2b2d42;
+  --redPantone: #ef233c;
+  --fireEngineRed: #d90429;
+}
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}

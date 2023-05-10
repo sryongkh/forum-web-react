@@ -1,0 +1,47 @@
+/* #data-topic {
+  overflow: auto;
+} */
+
+#close-button {
+  position: absolute;
+  top: 4rem;
+  right: 4rem;
+  font-size: 4rem;
+  cursor: pointer;
+  transition: transform 0.2s ease-out;
+}
+
+#close-button:hover {
+  transform: rotate(90deg);
+  color: var(--fireEngineRed);
+}
+
+#close-button:not(:hover) {
+  transform: rotate(0deg);
+}
+
+/* #submit-button {
+  position: absolute;
+  z-index: 999;
+} */
+
+/* #new-topic-dialog, #modal-page {
+  overflow: hidden; /* Hide scrollbars 
+} */
+
+/* Scroll Bar */
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--fireEngineRed);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000;
+}

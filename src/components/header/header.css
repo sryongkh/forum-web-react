@@ -1,0 +1,39 @@
+input, select {
+  outline: none;
+  border: none;
+}
+
+span#username {
+  color: var(--fireEngineRed);
+}
+
+#navbar {
+  background-color: var(--white);
+}
+
+#contents {
+  width: 100%;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+#logo {
+  border-radius: 50px;
+  background-color: var(--fireEngineRed);
+}
+
+#search {
+  background-color: var(--antiFlashWhite);
+  border: 1px solid var(--coolGray);
+  grid-template-columns: 5fr 0.1fr 2fr 0.7fr;
+}
+
+#vertical-hr {
+  border-left: 1px solid var(--coolGray);
+  height: 40px;
+  width: 0;
+}
+
+#btn-search {
+  background-color: var(--spaceCadet);
+  color: var(--white);
+}

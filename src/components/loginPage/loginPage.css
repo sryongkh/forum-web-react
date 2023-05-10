@@ -1,0 +1,23 @@
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"] {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #3f51b5;
+}
+
+#btn-sign-in {
+  background-color: var(--spaceCadet);
+}
+
+#btn-sign-up {
+  background-color: var(--fireEngineRed);
+}

@@ -1,0 +1,4 @@
+.user-profile {
+  background-color: var(--antiFlashWhite);
+  border: 1px solid var(--coolGray);
+}
