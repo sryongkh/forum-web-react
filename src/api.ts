@@ -3,7 +3,7 @@ import firebaseConfig from "./firebase";
 import { updateProfile } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
-import { Topic } from "./components/forumPage/forumPage";
+import { Category } from "./components/forumPage/forumPage";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import userProfilePic from "../src/assets/user.png";
 
@@ -63,29 +63,29 @@ export const getProfileImageURL = async (uid: string): Promise<string> => {
   }
 };
 
-// Topics
-export const getTopics = async () => {
+// Categories
+export const getCategories = async () => {
   try {
-    const response = await axios.get(`${API_URL}/topics`);
-    return response.data.topics;
+    const response = await axios.get(`${API_URL}/categories`);
+    return response.data.categories;
   } catch (err) {
     if (err instanceof Error) {
-      console.error("Error fetching topics:", err.message);
+      console.error("From 'getCategories' in api.ts => ", err.message);
     } else {
       console.error("Unknown error occurred:", err);
     }
   }
 };
 
-export const fetchTopics = async (
-  setTopics: React.Dispatch<React.SetStateAction<Topic[]>>
+export const fetchCategories = async (
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>
 ) => {
   try {
-    const response = await axios.get("http://localhost:5000/topics");
-    setTopics(response.data.topics);
+    const response = await axios.get("http://localhost:5000/categories");
+    setCategories(response.data.categories);
   } catch (err) {
     if (err instanceof Error) {
-      console.error("Error fetching topics:", err.message);
+      console.error("From 'fetchCategories' in api.ts =>", err.message);
     } else {
       console.error("Unknown error occurred:", err);
     }
@@ -94,14 +94,14 @@ export const fetchTopics = async (
 
 export const createCategories = async (name: string, bannerColor: string) => {
   try {
-    const response = await axios.post(`${API_URL}/categories`, {
+    const response = await axios.post(`${API_URL}/categories/create`, {
       name,
       bannerColor,
     });
     return response.data;
   } catch (err) {
     if (err instanceof Error) {
-      console.error("Error creating category:", err.message);
+      console.error("From 'createCategories' in api.ts => ", err.message);
     } else {
       console.error("Unknown error occurred:", err);
     }

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import "./newTopic.css";
+import "./newCategory.css";
 
-interface NewTopicProps {
+interface NewCategoryProps {
   name: string;
   bannerColor: string;
 }
 
-const NewTopic: React.FC<NewTopicProps> = ({ name, bannerColor }) => {
+const NewCategory: React.FC<NewCategoryProps> = ({ name, bannerColor }) => {
   return (
     <div className="rounded-3xl h-80 p-10 font-bold shadow-md">
       <div
@@ -37,4 +37,4 @@ const NewTopic: React.FC<NewTopicProps> = ({ name, bannerColor }) => {
   );
 };
 
-export default NewTopic;
+export default NewCategory;

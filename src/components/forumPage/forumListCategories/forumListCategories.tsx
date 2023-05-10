@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Topic } from "../forumPage";
+import { Category } from "../forumPage";
 import { Link } from "react-router-dom";
 import CategoriesCard from "../categoriesCard/categoriesCard";
-import { getTopics } from "../../../api";
+import { getCategories } from "../../../api";
 
 interface Props {
-  topics: Topic[];
-  handleTopicClick: (topicName: string) => void;
+  categories: Category[];
+  handleCategoryClick: (topicName: string) => void;
 }
 
-const ForumListCategories: React.FC<Props> = ({ topics, handleTopicClick }) => {
+const ForumListCategories: React.FC<Props> = ({ categories, handleCategoryClick }) => {
   return (
     <div className="h-full w-full">
       <div id="forum-list" className="grid gap-8 grid-cols-3">
-        {topics &&
-          topics.map((topic) => (
+        {categories &&
+          categories.map((category) => (
             <CategoriesCard
-              key={topic._id}
-              name={topic.name}
-              bannerColor={topic.bannerColor}
-              onClick={() => handleTopicClick(topic.name)}
+              key={category._id}
+              name={category.name}
+              bannerColor={category.bannerColor}
+              onClick={() => handleCategoryClick(category.name)}
             />
           ))}
       </div>

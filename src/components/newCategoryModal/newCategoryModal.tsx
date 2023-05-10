@@ -28,7 +28,7 @@ const NewCategoryModal: React.FC<NewCategoryModalProps> = ({
     }
 
     try {
-      const response = await axios.get(`http://localhost:5000/topics/${name}`);
+      const response = await axios.get(`http://localhost:5000/categories/${name}`);
       if (response.data) {
         setAlertOpen(true);
         return;
@@ -36,7 +36,7 @@ const NewCategoryModal: React.FC<NewCategoryModalProps> = ({
       onSubmit(name, bannerColor);
       setName("");
     } catch (err) {
-      console.error("Error checking for existing topic:", err);
+      console.error("From newCategoryModal.tsx => ", err);
     }
   };
 
@@ -52,12 +52,12 @@ const NewCategoryModal: React.FC<NewCategoryModalProps> = ({
       }}
     >
       <div className="bg-white rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-xl font-bold mb-4">Create New Topic</h2>
+        <h2 className="text-xl font-bold mb-4">Create New Categories</h2>
         <input
           type="text"
           value={name}
           onChange={(event) => setName(event.target.value)}
-          placeholder="Topic name"
+          placeholder="Categories name"
           className="w-full"
         />
 
@@ -92,12 +92,12 @@ const NewCategoryModal: React.FC<NewCategoryModalProps> = ({
         >
           <Alert severity="error" style={{ borderRadius: "8px" }}>
             {name && bannerColor
-              ? "Topic name already exists. Please enter a different name."
+              ? "Categories name already exists. Please enter a different name."
               : !name && !bannerColor
-              ? "Please enter topic name and choose a banner color."
+              ? "Please enter category name and choose a banner color."
               : !bannerColor
               ? "Please choose a banner color."
-              : "Topic name already exists. Please enter a different name."}
+              : "Categories name already exists. Please enter a different name."}
           </Alert>
         </Snackbar>
       </div>

@@ -113,8 +113,7 @@ const LoginPage = ({
         email,
         password
       );
-      const user = userCredential.user;
-      console.log(user);
+      const user = userCredential.user;      
       localStorage.setItem("recentLogin", email);
       await addRecentLogin(user);
       navigate(`/`);
@@ -128,7 +127,6 @@ const LoginPage = ({
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log(user);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);

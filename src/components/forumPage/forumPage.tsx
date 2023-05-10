@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { createCategories, fetchTopics } from "../../api";
+import { createCategories, fetchCategories } from "../../api";
 import { initializeApp } from "firebase/app";
 import firebaseConfig from "../../firebase";
 import { getAuth, User } from "firebase/auth";
@@ -13,12 +13,12 @@ import LoginAlertModal from "../loginAlertModal/loginAlertModal";
 import ForumListCategories from "./forumListCategories/forumListCategories";
 import ForumListPopular from "./forumListPopular/forumListPopular";
 
-import axios from "axios";
+// import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-export interface Topic {
+export interface Category {
   _id: string;
   name: string;
   bannerColor: string;
@@ -33,7 +33,7 @@ const ForumPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newCategory, setNewCategory] = useState<JSX.Element[]>([]);
-  const [topics, setTopics] = useState<Topic[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isModalLoginOpen, setIsModalLoginOpen] = useState(false);
   const [isPopularSelected, setIsPopularSelected] = useState(false);
   const [isCategoriesSelected, setIsCategoriesSelected] = useState(true);
@@ -56,7 +56,7 @@ const ForumPage: React.FC = () => {
         key={categoriesCardData._id}
         name={name}
         bannerColor={bannerColor}
-        onClick={() => handleTopicClick(categoriesCardData._id)}
+        onClick={() => handleCategoryClick(categoriesCardData._id)}
       />,
     ]);
     setIsModalOpen(false);
@@ -67,22 +67,26 @@ const ForumPage: React.FC = () => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUser(user);
-        console.log(user);
       }
     });
 
     setIsLoading(true);
-    fetchTopics(setTopics)
+    fetchCategories(setCategories)
       .then(() => setIsLoading(false))
       .catch(() => setIsLoading(false));
 
+    const interval = setInterval(() => {
+      fetchCategories(setCategories);
+    }, 5000);
+
     return () => {
+      clearInterval(interval);
       unsubscribe();
     };
   }, []);
 
-  const handleTopicClick = (topicName: string) => {
-    navigate(`/topic/${topicName}`);
+  const handleCategoryClick = (categoryName: string) => {
+    navigate(`/category/${categoryName}`);
   };
 
   return (
@@ -110,7 +114,7 @@ const ForumPage: React.FC = () => {
         </div>
         <div id="button" className="flex justify-end items-center text-white">
           <button
-            id="btn-new-topic"
+            id="btn-new-category"
             className="h-14 px-5 rounded-md font-bold"
             style={{ backgroundColor: "var(--spaceCadet)" }}
             onClick={handleNewCategoryClick}
@@ -137,8 +141,8 @@ const ForumPage: React.FC = () => {
           {isPopularSelected && <ForumListPopular />}
           {isCategoriesSelected && (
             <ForumListCategories
-              topics={topics}
-              handleTopicClick={handleTopicClick}
+              categories={categories}
+              handleCategoryClick={handleCategoryClick}
             />
           )}
         </>

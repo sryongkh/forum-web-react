@@ -11,9 +11,9 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faBars } from "@fortawesome/free-solid-svg-icons";
 
-interface Topic {
-  name: string;
-}
+// interface Topic {
+//   name: string;
+// }
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -25,9 +25,22 @@ const Header: React.FC = () => {
   ) {
     return null;
   }
-  const [topics, setTopics] = useState<Topic[]>([]);
+  // const [topics, setTopics] = useState<Topic[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
+
+  // const fetchCategories = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:5000/categories");
+  //     setCategories(response.data.topics);
+  //   } catch (err) {
+  //     if (err instanceof Error) {
+  //       console.error("Error fetching topics:", err.message);
+  //     } else {
+  //       console.error("Unknown error occurred:", err);
+  //     }
+  //   }
+  // };
 
   const navigate = useNavigate();
 
@@ -36,24 +49,11 @@ const Header: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchTopics = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/topics");
-        setTopics(response.data.topics);
-      } catch (err) {
-        if (err instanceof Error) {
-          console.error("Error fetching topics:", err.message);
-        } else {
-          console.error("Unknown error occurred:", err);
-        }
-      }
-    };
+    // fetchCategories();
+    // const interval = setInterval(() => {
+    //   fetchCategories();
+    // }, 3000);
 
-    fetchTopics();
-    const interval = setInterval(() => {
-      fetchTopics();
-    }, 3000);
-    
     const auth = getAuth();
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -65,7 +65,7 @@ const Header: React.FC = () => {
     });
 
     return () => {
-      clearInterval(interval);
+      // clearInterval(interval);
       unsubscribe();
     };
   }, undefined);
@@ -93,11 +93,11 @@ const Header: React.FC = () => {
           <div id="vertical-hr"></div>
           <select id="search-selected" className="h-11 bg-transparent">
             <option value="all-topic-name">All</option>
-            {topics.map((topic) => (
+            {/* {topics.map((topic) => (
               <option value={topic.name} key={topic.name}>
                 {topic.name}
               </option>
-            ))}
+            ))} */}
           </select>
           <button
             id="btn-search"

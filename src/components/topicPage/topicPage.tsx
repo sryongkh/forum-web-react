@@ -22,24 +22,24 @@ const TopicPage: React.FC = () => {
     setIsModalOpen(true);
     // }
   };
-
-  useEffect(() => {
-    const fetchTopic = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/topics/${name}`
-        );
-        setTopic(response.data);
-        setBannerColor(response.data.bannerColor);
-      } catch (err) {
-        if (err instanceof Error) {
-          console.error("Error fetching topics:", err.message);
-        } else {
-          console.error("Unknown error occurred:", err);
-        }
+  
+  const fetchTopic = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/categories/${name}`
+      );
+      setTopic(response.data);
+      setBannerColor(response.data.bannerColor);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error("Error fetching topics:", err.message);
+      } else {
+        console.error("Unknown error occurred:", err);
       }
-    };
-
+    }
+  };
+  
+  useEffect(() => {
     fetchTopic();
   }, [name]);
 

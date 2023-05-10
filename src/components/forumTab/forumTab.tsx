@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { createTopic } from "../../api";
+import { createCategories } from "../../api";
 import "./forumTab.css";
-import NewTopic from "../newTopic/newTopic";
-import NewTopicModal from "../newTopicModal/newTopicModal";
+import NewCategory from "../newTopic/newTopic";
+import NewCategoryModal from "../newCategoryModal/newCategoryModal";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-interface Topic {
+interface Category {
   _id: string;
   name: string;
   bannerColor: string;
@@ -16,27 +16,31 @@ interface Topic {
 
 const ForumTab: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newTopics, setNewTopics] = useState<JSX.Element[]>([]);
-  const [topics, setTopics] = useState<Topic[]>([]);
+  const [newCategories, setNewCategories] = useState<JSX.Element[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const handleNewTopicClick = () => {
     setIsModalOpen(true);
   };
 
   const handleSubmit = async (name: string, bannerColor: string) => {
-    const newTopicData = await createTopic(name, bannerColor);
-    setNewTopics([
-      ...newTopics,
-      <NewTopic key={newTopicData._id} name={name} bannerColor={bannerColor} />,
+    const newCategoryData = await createCategories(name, bannerColor);
+    setNewCategories([
+      ...newCategories,
+      <NewCategory
+        key={newCategoryData._id}
+        name={name}
+        bannerColor={bannerColor}
+      />,
     ]);
     setIsModalOpen(false);
   };
 
-  const fetchTopics = async () => {
+  const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/topics/");
-      const topics = response.data.topics;
-      setTopics(topics);
+      const response = await axios.get("http://localhost:5000/categories/");
+      const categories = response.data.categories;
+      setCategories(categories);
     } catch (err) {
       if (err instanceof Error) {
         console.error("Error fetching topics:", err.message);
@@ -47,7 +51,7 @@ const ForumTab: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchTopics();
+    fetchCategories();
   }, []);
 
   return (
@@ -73,7 +77,7 @@ const ForumTab: React.FC = () => {
             />
             New Topic
           </button>
-          <NewTopicModal
+          <NewCategoryModal
             isOpen={isModalOpen}
             onRequestClose={() => setIsModalOpen(false)}
             onSubmit={handleSubmit}
@@ -82,14 +86,14 @@ const ForumTab: React.FC = () => {
       </div>
       <div className="h-full w-full">
         <div id="forum-list" className="grid gap-8 grid-cols-3">
-          {topics.map((topic) => (
-            <NewTopic
-              key={topic._id}
-              name={topic.name}
-              bannerColor={topic.bannerColor}
+          {categories.map((categories) => (
+            <NewCategory
+              key={categories._id}
+              name={categories.name}
+              bannerColor={categories.bannerColor}
             />
           ))}
-          {newTopics}
+          {newCategories}
         </div>
       </div>
     </div>
