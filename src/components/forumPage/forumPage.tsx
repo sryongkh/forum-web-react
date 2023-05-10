@@ -49,6 +49,7 @@ const ForumPage: React.FC = () => {
   };
 
   const handleSubmit = async (name: string, bannerColor: string) => {
+   
     const categoriesCardData = await createCategories(name, bannerColor);
     await createTags(name, []);
     setNewCategory([

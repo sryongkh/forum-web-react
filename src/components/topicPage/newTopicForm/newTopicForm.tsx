@@ -87,7 +87,9 @@ const NewTopicForm: React.FC<NewTopicFormProps> = ({
           />
           <div id="data-topic" className="mt-32 px-8">
             <div className="flex flex-col">
-              <label htmlFor="input-topic-title">Topics Title</label>
+              <label className="font-medium" htmlFor="input-topic-title">
+                Topics Title
+              </label>
               <div className="rounded-md bg-zinc-200 px-4 py-2 flex items-center">
                 <input
                   id="input-topic-title"
@@ -101,8 +103,8 @@ const NewTopicForm: React.FC<NewTopicFormProps> = ({
               </div>
             </div>
 
-            <div className="font-medium mt-4 flex flex-col">
-              <label className="" htmlFor="input-topic-category">
+            <div className="mt-4 flex flex-col">
+              <label className="font-medium" htmlFor="input-topic-category">
                 Category
               </label>
               <input
@@ -114,7 +116,7 @@ const NewTopicForm: React.FC<NewTopicFormProps> = ({
             </div>
 
             <div className="mt-4 flex flex-col">
-              <label className="" htmlFor="input-topic-tags">
+              <label className="font-medium" htmlFor="input-topic-tags">
                 Tags
               </label>
               <input
@@ -141,11 +143,11 @@ const NewTopicForm: React.FC<NewTopicFormProps> = ({
               />
             </div>
           </div>
-          <div id="submit-button" className="relative pr-8 flex justify-end">
+          <div id="submit-button" className="fixed right-8 bottom-4">
             <button
               id="btn-new-topic"
               className="h-14 px-5 rounded-md font-bold text-white"
-              style={{ backgroundColor: "var(--spaceCadet)" }}
+              style={{ backgroundColor: "var(--redPantone)" }}
               // onClick={handleNewCategoryClick}
             >
               Create Post

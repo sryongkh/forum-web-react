@@ -36,7 +36,7 @@ const NewCategoryModal: React.FC<NewCategoryModalProps> = ({
       onSubmit(name, bannerColor);
       setName("");
     } catch (err) {
-      console.error("Error from newCategoryModal.tsx => ", err);
+      console.error("From newCategoryModal.tsx => ", err);
     }
   };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createCategories } from "../../../api";
 import "./forumTab.css";
-import NewCategory from "../../topicPage/newTopic/newTopic";
+import CategoriesCard from "../categoriesCard/categoriesCard";
 import NewCategoryModal from "../newCategoryModal/newCategoryModal";
 import axios from "axios";
 
@@ -27,10 +27,11 @@ const ForumTab: React.FC = () => {
     const newCategoryData = await createCategories(name, bannerColor);
     setNewCategories([
       ...newCategories,
-      <NewCategory
+      <CategoriesCard
         key={newCategoryData._id}
         name={name}
         bannerColor={bannerColor}
+        onClick={() => console.log("Categories card clicked!")}
       />,
     ]);
     setIsModalOpen(false);
@@ -87,10 +88,11 @@ const ForumTab: React.FC = () => {
       <div className="h-full w-full">
         <div id="forum-list" className="grid gap-8 grid-cols-3">
           {categories.map((categories) => (
-            <NewCategory
+            <CategoriesCard
               key={categories._id}
               name={categories.name}
               bannerColor={categories.bannerColor}
+              onClick={() => console.log("Categories card clicked!")}
             />
           ))}
           {newCategories}

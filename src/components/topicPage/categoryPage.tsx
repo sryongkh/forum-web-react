@@ -51,11 +51,9 @@ const CategoryPage: React.FC = () => {
     setTags(tagsData);
   };
 
-  const tagCategory = tags.find((tag) => tag.category === category?.name);
+  const tagCategory = tags.find((tags) => tags.category === category?.name);
 
   useEffect(() => {
-    console.log(tagCategory?.tagName);
-    console.log(category?.name);
     getCategory();
     getTagsName();
   }, [name]);
