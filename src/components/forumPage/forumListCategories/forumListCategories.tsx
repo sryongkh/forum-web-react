@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Category } from "../forumPage";
-import { Link } from "react-router-dom";
 import CategoriesCard from "../categoriesCard/categoriesCard";
-import { getCategories } from "../../../api";
 
 interface Props {
   categories: Category[];

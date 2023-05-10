@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import firebaseConfig from "../../firebase";
+import firebaseConfig from "../../../firebase";
 
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";

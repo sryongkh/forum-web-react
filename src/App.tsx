@@ -10,7 +10,7 @@ import Header from "./components/header/header";
 import ForumPage from "./components/forumPage/forumPage";
 import LoginPage from "./components/loginPage/loginPage";
 import SignupPage from "./components/signUp/signupPage";
-import ForgotPasswordPage from "./components/forgetPasswordPage/forgetPasswordPage";
+import ForgotPasswordPage from "./components/loginPage/forgetPasswordPage/forgetPasswordPage";
 import UserProfilePage from "./components/userProfile/userProfile";
 
 function App() {

@@ -8,7 +8,7 @@ import { getAuth, User } from "firebase/auth";
 import "./forumPage.css";
 
 import CategoriesCard from "./categoriesCard/categoriesCard";
-import NewCategoryModal from "../newCategoryModal/newCategoryModal";
+import NewCategoryModal from "./newCategoryModal/newCategoryModal";
 import LoginAlertModal from "../loginAlertModal/loginAlertModal";
 import ForumListCategories from "./forumListCategories/forumListCategories";
 import ForumListPopular from "./forumListPopular/forumListPopular";
