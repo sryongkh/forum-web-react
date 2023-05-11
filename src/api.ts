@@ -64,6 +64,22 @@ export const getProfileImageURL = async (uid: string): Promise<string> => {
 };
 
 // Categories
+export const createCategories = async (name: string, bannerColor: string) => {
+  try {
+    const response = await axios.post(`${API_URL}/categories/create`, {
+      name,
+      bannerColor,
+    });
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'createCategories' in api.ts => ", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
 export const getCategories = async () => {
   try {
     const response = await axios.get(`${API_URL}/categories`);
@@ -81,8 +97,13 @@ export const fetchCategories = async (
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>
 ) => {
   try {
-    const response = await axios.get("http://localhost:5000/categories");
-    setCategories(response.data.categories);
+    const response = await axios.get(`${API_URL}/categories`);
+    const categoriesWithId = response.data.categories.map(
+      (category: Category) => {
+        return { ...category, id: category._id };
+      }
+    );
+    setCategories(categoriesWithId);
   } catch (err) {
     if (err instanceof Error) {
       console.error("From 'fetchCategories' in api.ts =>", err.message);
@@ -101,22 +122,6 @@ export const getCategoryName = async (name: string) => {
   } catch (err) {
     if (err instanceof Error) {
       console.error("Error fetching topics:", err.message);
-    } else {
-      console.error("Unknown error occurred:", err);
-    }
-  }
-};
-
-export const createCategories = async (name: string, bannerColor: string) => {
-  try {
-    const response = await axios.post(`${API_URL}/categories/create`, {
-      name,
-      bannerColor,
-    });
-    return response.data;
-  } catch (err) {
-    if (err instanceof Error) {
-      console.error("From 'createCategories' in api.ts => ", err.message);
     } else {
       console.error("Unknown error occurred:", err);
     }
@@ -157,3 +162,91 @@ export const getTags = async () => {
     }
   }
 };
+
+export const fetchTags = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/tags`);
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'fetchTags' in api.ts =>", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
+// Topics
+export const createTopics = async (
+  uid: string,
+  displayName: string,
+  title: string,
+  categoryName: string,
+  tags: string[],
+  body: string,
+  postedDate: string
+) => {
+  const currentDate = new Date();
+  const timeString = currentDate.toLocaleTimeString();
+  try {
+    const response = await axios.post(`${API_URL}/topics/create`, {
+      uid: uid,
+      displayName: displayName,
+      datePost: postedDate,
+      timePost: timeString,
+      tagName: tags,
+      categoryName: categoryName,
+      topicTitle: title,
+      topicBody: body,
+      likeCount: 0,
+      views: 0,
+      replyList: [],
+    });
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'createTopics' in api.ts => ", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
+export const updateTopic = async (
+  id: string,
+  title: string,
+  category: string,
+  tags: string[],
+  topic: string
+) => {
+  try {
+    const response = await axios.put(`${API_URL}/topics/${id}`, {
+      title,
+      category,
+      tags,
+      topic,
+    });
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'updateTopic' in api.ts => ", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
+export const fetchTopics = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/topics`);
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'fetchTopics' in api.ts =>", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
+

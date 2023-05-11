@@ -13,3 +13,7 @@
 #lastest-popular a:hover {
   color: var(--black);
 }
+
+#topic-row {
+  border-bottom: 1px solid #eeeeee;
+}

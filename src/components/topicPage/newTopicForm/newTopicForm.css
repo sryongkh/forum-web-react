@@ -20,6 +20,9 @@
   transform: rotate(0deg);
 }
 
+#input-topic-category {
+  margin: 0;
+}
 /* #submit-button {
   position: absolute;
   z-index: 999;

@@ -21,7 +21,10 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 export interface Category {
   _id: string;
   name: string;
-  bannerColor: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  id: string;
 }
 
 const app = initializeApp(firebaseConfig);
@@ -49,7 +52,6 @@ const ForumPage: React.FC = () => {
   };
 
   const handleSubmit = async (name: string, bannerColor: string) => {
-   
     const categoriesCardData = await createCategories(name, bannerColor);
     await createTags(name, []);
     setNewCategory([

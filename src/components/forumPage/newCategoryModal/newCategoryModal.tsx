@@ -28,7 +28,9 @@ const NewCategoryModal: React.FC<NewCategoryModalProps> = ({
     }
 
     try {
-      const response = await axios.get(`http://localhost:5000/categories/${name}`);
+      const response = await axios.get(
+        `http://localhost:5000/categories/${name}`
+      );
       if (response.data) {
         setAlertOpen(true);
         return;
@@ -62,8 +64,8 @@ const NewCategoryModal: React.FC<NewCategoryModalProps> = ({
         />
 
         <div className="w-full my-4">
-          <p>Banner Color</p>
-          <div className="flex justify-center items-center my-2">
+          <p className="w-full font-medium">Banner Color</p>
+          <div className="flex justify-center items-center my-4">
             <CirclePicker
               color={bannerColor}
               onChange={(color) => setBannerColor(color.hex)}

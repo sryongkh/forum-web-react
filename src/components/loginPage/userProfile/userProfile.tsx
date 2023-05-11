@@ -25,8 +25,6 @@ const auth = getAuth(app);
 const storage = getStorage(app);
 
 const UserProfilePage: React.FC = () => {
-  const user = auth.currentUser;
-
   const hiddenFileInput = createRef<HTMLInputElement>();
 
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -34,6 +32,8 @@ const UserProfilePage: React.FC = () => {
   const [address, setAddress] = useState("");
   const [username, setUsername] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+
+  const user = auth.currentUser;
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -117,8 +117,6 @@ const UserProfilePage: React.FC = () => {
   useEffect(() => {
     fetchUserProfileData();
     fetchProfileImageURL();
-
-    fetchUserProfileData();
 
     const intervalId = setInterval(() => {
       fetchUserProfileData();
