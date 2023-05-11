@@ -7,7 +7,12 @@ interface Props {
   handleCategoryClick: (topicName: string) => void;
 }
 
-const ForumListCategories: React.FC<Props> = ({ categories, handleCategoryClick }) => {
+const ForumListCategories: React.FC<Props> = ({
+  categories,
+  handleCategoryClick,
+}) => {
+
+
   return (
     <div className="h-full w-full">
       <div id="forum-list" className="grid gap-8 grid-cols-3">

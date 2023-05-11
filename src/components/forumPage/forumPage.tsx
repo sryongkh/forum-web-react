@@ -21,6 +21,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 export interface Category {
   _id: string;
   name: string;
+  bannerColor: string;
   description: string;
   createdAt: Date;
   updatedAt: Date;
