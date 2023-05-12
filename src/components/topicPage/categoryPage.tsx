@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import { User, getAuth } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import firebaseConfig from "../../firebase";
+// import { initializeApp } from "firebase/app";
+// import firebaseConfig from "../../firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 import NewTopicForm from "./newTopicForm/newTopicForm";
 import LoginAlertModal from "../loginPage/loginAlertModal/loginAlertModal";
+import TopicContentDialog from "./topicContentDialog/topicContentDialog";
 
 import { getCategoryName, getTags, fetchTopics } from "../../api";
 
@@ -26,8 +28,7 @@ interface Tag {
   __v: number;
 }
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const auth = getAuth();
 const user = auth.currentUser;
 
 const CategoryPage: React.FC = () => {
@@ -40,8 +41,16 @@ const CategoryPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalLoginOpen, setIsModalLoginOpen] = useState(false);
 
+  const [topicContentOpen, setTopicContentOpen] = useState(false);
+  const [selectedTopicId, setSelectedTopicId] = useState("");
+
+  const tagCategory = tags.find((tags) => tags.category === category?.name);
+  const filteredTopics = topics.filter(
+    (topic) => topic.categoryName === category?.name
+  );
+
   const handleNewCategoryClick = () => {
-    if (!user) {
+    if (!currentUser) {
       setIsModalLoginOpen(true);
     } else {
       setIsModalOpen(true);
@@ -67,24 +76,29 @@ const CategoryPage: React.FC = () => {
     setTags(tagsData);
   };
 
-  const tagCategory = tags.find((tags) => tags.category === category?.name);
+  const handleTopicClick = (topicId: string) => {
+    setSelectedTopicId(topicId);
+    setTopicContentOpen(true);
+  };
+
+  const handleDialogConfirm = () => {
+    // navigate(`/topic/${selectedTopicId}`);
+    setTopicContentOpen(false);
+  };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
-      }
-    });
     getCategory();
     getTagsName();
-    return () => {
-      unsubscribe();
-    };
   }, [name]);
 
   useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      console.log(user);
+      if (user) {
+        setCurrentUser(user);
+      }
+    });
     const fetchAllTopics = async () => {
       try {
         const topicsData = await fetchTopics();
@@ -99,12 +113,20 @@ const CategoryPage: React.FC = () => {
         console.error("Error in fetchAllTopics:", error);
       }
     };
-
     fetchAllTopics();
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
     <>
+      <TopicContentDialog
+        isOpen={topicContentOpen}
+        onRequestClose={() => setTopicContentOpen(false)}
+        topicId={selectedTopicId}
+      />
       <NewTopicForm
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
@@ -174,11 +196,12 @@ const CategoryPage: React.FC = () => {
             <td className="w-2/12">REPLIES</td>
             <td className="w-1/12">VIEWS</td>
           </tr>
-          {topics.map((topic) => (
+          {filteredTopics.map((topic) => (
             <tr
               key={topic._id}
               id="topic-row"
-              className="h-16 text-sm font-bold"
+              className="h-16 text-sm font-bold cursor-pointer"
+              onClick={() => handleTopicClick(topic._id)}
             >
               <td className="w-6/12">{topic.topicTitle}</td>
               <td className="w-3/12">{topic.displayName}</td>

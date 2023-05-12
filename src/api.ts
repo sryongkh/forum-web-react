@@ -115,9 +115,7 @@ export const fetchCategories = async (
 
 export const getCategoryName = async (name: string) => {
   try {
-    const response = await axios.get(
-      `http://localhost:5000/categories/${name}`
-    );
+    const response = await axios.get(`${API_URL}/categories/${name}`);
     return response.data;
   } catch (err) {
     if (err instanceof Error) {
@@ -249,4 +247,28 @@ export const fetchTopics = async () => {
   }
 };
 
+export const fetchSelectedTopics = async (topicId: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/topics/${topicId}`);
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'fetchSelectedTopics' in api.ts =>", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
 
+export const fetchLastestTopics = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/topics/lastest-topics`);
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'fetchLastestTopics' in api.ts =>", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};

@@ -144,7 +144,7 @@ const NewTopicForm: React.FC<NewTopicFormProps> = ({
           style: {
             borderTopLeftRadius: "8rem",
             borderTopRightRadius: "8rem",
-            height: "99%",
+            height: "97%",
             marginTop: "auto",
           },
         }}
