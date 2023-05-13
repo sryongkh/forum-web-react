@@ -38,6 +38,7 @@ const Transition = React.forwardRef(function Transition(
 interface NewTopicFormProps {
   isOpen: boolean;
   onRequestClose: () => void;
+  categoryName: string;
   onSubmit: (
     uid: string,
     displayName: string,
@@ -58,7 +59,9 @@ const timeString = present.toLocaleTimeString();
 
 const NewTopicForm: React.FC<NewTopicFormProps> = ({
   isOpen,
+  categoryName,
   onRequestClose,
+  onSubmit
 }) => {
   const [currentUser, setCurrentUser] = React.useState<User | null>(null);
 
@@ -115,7 +118,7 @@ const NewTopicForm: React.FC<NewTopicFormProps> = ({
         setCurrentUser(null);
       }
     });
-
+    
     return () => {
       unsubscribe();
     };
@@ -184,7 +187,7 @@ const NewTopicForm: React.FC<NewTopicFormProps> = ({
                     <Select
                       id="input-topic-category"
                       className="rounded-md bg-zinc-200 m-0"
-                      value={category}
+                      value={categoryName}
                       onChange={(event) => {
                         setCategory(event.target.value);
                       }}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 import { User, getAuth } from "firebase/auth";
 // import { initializeApp } from "firebase/app";
@@ -77,13 +77,8 @@ const CategoryPage: React.FC = () => {
   };
 
   const handleTopicClick = (topicId: string) => {
-    setSelectedTopicId(topicId);
     setTopicContentOpen(true);
-  };
-
-  const handleDialogConfirm = () => {
-    // navigate(`/topic/${selectedTopicId}`);
-    setTopicContentOpen(false);
+    setSelectedTopicId(topicId);
   };
 
   useEffect(() => {
@@ -124,11 +119,16 @@ const CategoryPage: React.FC = () => {
     <>
       <TopicContentDialog
         isOpen={topicContentOpen}
-        onRequestClose={() => setTopicContentOpen(false)}
+        onRequestClose={() => {
+          setTopicContentOpen(false);
+          setSelectedTopicId("");
+        }}
         topicId={selectedTopicId}
       />
+
       <NewTopicForm
         isOpen={isModalOpen}
+        categoryName={category ? category.name : ""}
         onRequestClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmitNewTopic}
       />

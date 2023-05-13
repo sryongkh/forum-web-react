@@ -247,7 +247,7 @@ export const fetchTopics = async () => {
   }
 };
 
-export const fetchSelectedTopics = async (topicId: string) => {
+export const fetchSelectedTopic = async (topicId: string) => {
   try {
     const response = await axios.get(`${API_URL}/topics/${topicId}`);
     return response.data;
