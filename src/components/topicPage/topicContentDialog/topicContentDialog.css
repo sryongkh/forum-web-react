@@ -20,7 +20,9 @@
 /* Content */
 
 #topic-content {
+  background-color: var(--spaceCadet);
   height: 83vh;
+  color: white;
 }
 
 

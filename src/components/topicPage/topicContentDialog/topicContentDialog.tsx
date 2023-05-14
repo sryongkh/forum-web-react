@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Parser from "html-react-parser";
 
 import "./topicContentDialog.css";
-import { fetchSelectedTopic } from "../../../api";
+import { fetchSelectedTopic, getProfileImageURL } from "../../../api";
 
 import Dialog from "@mui/material/Dialog";
 import Collapse from "@mui/material/Collapse";
@@ -56,10 +56,22 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
   const [isBookmark, setIsBookmark] = React.useState(false);
   const [replyOpen, setReplyOpen] = React.useState(false);
   const [reply, setReply] = React.useState("");
+  const [profileImageURL, setProfileImageURL] = React.useState("");
 
   // const topicContent = topicData.find((data) => data)
 
   // const navigate = useNavigate();
+
+  const fetchProfileImageURL = async () => {
+    if (topicData?.uid) {
+      const imageURL = await getProfileImageURL(topicData.uid);
+      console.log("Fetched Image URL:", imageURL);
+      setProfileImageURL(imageURL);
+    } else {
+      console.error("topicData or topicData.uid is undefined");
+    }
+  };
+
   const handleEditorChange = (content: string) => {
     setReply(content);
   };
@@ -91,6 +103,7 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
 
     if (isOpen) {
       fetchSelectedTopicData();
+      fetchProfileImageURL();
     } else {
       setTopicData(null);
     }
@@ -123,7 +136,7 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
             <div
               ref={sideMenuRef}
               id="side-menu"
-              className={`block w-2/5 h-full absolute right-0 bg-white p-4 transition-transform duration-300 ${
+              className={`block w-2/6 h-full absolute right-0 bg-white p-4 transition-transform duration-300 ${
                 replyOpen
                   ? "transform translate-x-0"
                   : "transform translate-x-full"
@@ -131,7 +144,7 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
             >
               {/* เมนูด้านข้าง */}
 
-              {/* Text Editor */}
+              {/* Reply */}
               <div className="px-5 mt-14">
                 <div className="flex">
                   <div className="w-8 h-8 p-5 flex justify-center items-center border rounded-sm">
@@ -209,14 +222,10 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
             onClick={onRequestClose}
           />
           {/* Reply */}
-
           <form>
             {/* {topicData.displayName} */}
             <div className="px-10 py-16 flex flex-auto">
-              <div
-                id="topic-content"
-                className="w-3/5 px-10 py-8 bg-blue-400 rounded-xl"
-              >
+              <div id="topic-content" className="w-3/5 px-10 py-8 rounded-xl">
                 <p
                   id="topic-title"
                   className="text-3xl font-semibold text-white"
@@ -227,7 +236,14 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
                   id="topic-author"
                   className=" flex items-center mt-8 text-md font-medium text-white"
                 >
-                  <div className="w-10 h-10 mr-2 bg-slate-600 rounded-full"></div>
+                  <div
+                    className="w-10 h-10 mr-2 bg-slate-600 rounded-full"
+                    style={{
+                      backgroundImage: `url(${profileImageURL})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  ></div>
                   <p>{topicData?.displayName}</p>
                 </div>
                 <div id="topic-body" className="mt-8 text-sm font-medium">
@@ -236,12 +252,12 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
 
                 <div className="flex">
                   <div className="flex justify-center items-center bg-slate-700 bg-opacity-25 mt-8 px-3 py-1 rounded-full text-sm font-medium">
-                    {topicData?.likeCount}&nbsp;
+                    {topicData?.likeCount}&nbsp;&nbsp;
                     <FontAwesomeIcon
                       icon={isLiked ? fasHeart : farHeart}
                       onClick={handleLikeClick}
                       className="cursor-pointer"
-                      style={{ color: isLiked ? "red" : "black" }}
+                      style={{ color: isLiked ? "red" : "white" }}
                     />
                   </div>
                   <div className="flex justify-center items-center bg-slate-700 bg-opacity-25 mt-8 ml-2 px-3 py-1 rounded-full text-sm font-medium">
@@ -249,7 +265,7 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
                       icon={isBookmark ? fasBookmark : farBookmark}
                       onClick={handleBookmarkClick}
                       className="cursor-pointer"
-                      style={{ color: isBookmark ? "" : "black" }}
+                      style={{ color: isBookmark ? "" : "white" }}
                     />
                   </div>
 
@@ -259,9 +275,9 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
                   >
                     <FontAwesomeIcon
                       icon={faReply}
-                      style={{ color: "black" }}
+                      style={{ color: "white" }}
                     />
-                    &nbsp;Reply
+                    &nbsp;&nbsp;Reply
                   </div>
                 </div>
 
