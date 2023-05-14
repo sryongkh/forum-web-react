@@ -6,10 +6,11 @@ import "./topicContentDialog.css";
 import { fetchSelectedTopic } from "../../../api";
 
 import Dialog from "@mui/material/Dialog";
-import Drawer from "@mui/material/Drawer";
+import Collapse from "@mui/material/Collapse";
+import Checkbox from "@mui/material/Checkbox";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
+import { Editor } from "@tinymce/tinymce-react";
 import {
   faXmark,
   faHeart as fasHeart,
@@ -21,6 +22,7 @@ import {
   faBookmark as farBookmark,
 } from "@fortawesome/free-regular-svg-icons";
 
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
 interface topicFormProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -53,10 +55,15 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
   const [isLiked, setIsLiked] = React.useState(false);
   const [isBookmark, setIsBookmark] = React.useState(false);
   const [replyOpen, setReplyOpen] = React.useState(false);
+  const [reply, setReply] = React.useState("");
 
   // const topicContent = topicData.find((data) => data)
 
   // const navigate = useNavigate();
+  const handleEditorChange = (content: string) => {
+    setReply(content);
+  };
+
   const handleLikeClick = () => {
     setIsLiked((prevState: any) => !prevState);
   };
@@ -96,7 +103,6 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
         open={isOpen}
         onClose={onRequestClose}
         fullScreen
-        // TransitionComponent={Transition}
         transitionDuration={500}
         PaperProps={{
           style: {
@@ -107,6 +113,95 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
           },
         }}
       >
+        <Collapse in={replyOpen}>
+          <div
+            id="side-menu-bg"
+            className={`overflow-hidden absolute block w-full h-full transition-opacity duration-300 ${
+              replyOpen ? "bg-gray-400 bg-opacity-40" : "bg-transparent"
+            }`}
+          >
+            <div
+              ref={sideMenuRef}
+              id="side-menu"
+              className={`block w-2/5 h-full absolute right-0 bg-white p-4 transition-transform duration-300 ${
+                replyOpen
+                  ? "transform translate-x-0"
+                  : "transform translate-x-full"
+              }`}
+            >
+              {/* เมนูด้านข้าง */}
+
+              {/* Text Editor */}
+              <div className="px-5 mt-14">
+                <div className="flex">
+                  <div className="w-8 h-8 p-5 flex justify-center items-center border rounded-sm">
+                    <FontAwesomeIcon
+                      icon={faReply}
+                      className="text-lg"
+                      style={{ color: "var(--fireEngineRed)" }}
+                    />
+                  </div>
+                  <div className="px-5 font-extrabold">
+                    <p>{topicData?.topicTitle}</p>
+                  </div>
+                </div>
+                <div className="mt-5">
+                  <Editor
+                    apiKey="ar3bll71u5ai3pbp02zqh8epqj4guoge5sifne7wmu72mhwl"
+                    init={{
+                      height: 300,
+                      menubar: false,
+                      plugins: "advlist lists link",
+                      toolbar:
+                        "undo redo | formatselect | bold italic | \
+                    alignleft aligncenter alignright alignjustify | \
+                    bullist numlist outdent indent | link",
+                    }}
+                    onEditorChange={handleEditorChange}
+                  />
+                </div>
+
+                <div className="mt-3 flex items-center">
+                  <Checkbox
+                    {...label}
+                    className="w-0 h-0"
+                    sx={{
+                      color: "var(--fireEngineRed)",
+                      "&.Mui-checked": {
+                        color: "var(--fireEngineRed)",
+                      },
+                    }}
+                  />
+                  &nbsp;&nbsp;
+                  <p className="text-sm">Notify me when a reply is posted</p>
+                </div>
+
+                <div className="w-full absolute bottom-6 right-5 text-end">
+                  <button
+                    id="btn-new-category"
+                    className="h-14 px-5 rounded-md font-bold"
+                    style={{ backgroundColor: "var(--antiFlashWhite)" }}
+                    onClick={handleReplyClickClose}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    id="btn-new-category"
+                    className="h-14 ml-3 px-5 rounded-md font-bold"
+                    style={{
+                      backgroundColor: "var(--fireEngineRed)",
+                      color: "var(--antiFlashWhite)",
+                    }}
+                    // onClick={}
+                  >
+                    Add Message
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Collapse>
+
         <div id="topic-page">
           <FontAwesomeIcon
             id="close-topic-button"
@@ -114,23 +209,7 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
             onClick={onRequestClose}
           />
           {/* Reply */}
-          {replyOpen && (
-            <div className="absolute block w-full h-full bg-white bg-opacity-40">
-              <div
-                ref={sideMenuRef}
-                id="side-menu"
-                className="block w-2/5 h-full absolute right-0 bg-gray-400 p-4"
-              >
-                {/* เมนูด้านข้าง */}
-                <FontAwesomeIcon
-                  id="close-reply-topic-button"
-                  icon={faXmark}
-                  onClick={handleReplyClickClose}
-                  className="cursor-pointer"
-                />
-              </div>
-            </div>
-          )}
+
           <form>
             {/* {topicData.displayName} */}
             <div className="px-10 py-16 flex flex-auto">
@@ -144,12 +223,13 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
                 >
                   {topicData?.topicTitle}
                 </p>
-                <p
+                <div
                   id="topic-author"
-                  className="mt-8 text-md font-medium text-white"
+                  className=" flex items-center mt-8 text-md font-medium text-white"
                 >
-                  {topicData?.displayName}
-                </p>
+                  <div className="w-10 h-10 mr-2 bg-slate-600 rounded-full"></div>
+                  <p>{topicData?.displayName}</p>
+                </div>
                 <div id="topic-body" className="mt-8 text-sm font-medium">
                   {topicData?.topicBody && Parser(topicData.topicBody)}
                 </div>
@@ -179,7 +259,6 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
                   >
                     <FontAwesomeIcon
                       icon={faReply}
-                      className=""
                       style={{ color: "black" }}
                     />
                     &nbsp;Reply

@@ -53,10 +53,6 @@ interface NewTopicFormProps {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const present = new Date();
-const dateString = present.toLocaleDateString();
-const timeString = present.toLocaleTimeString();
-
 const NewTopicForm: React.FC<NewTopicFormProps> = ({
   isOpen,
   categoryName,
