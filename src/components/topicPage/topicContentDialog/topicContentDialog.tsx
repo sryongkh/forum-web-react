@@ -62,14 +62,9 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
 
   // const navigate = useNavigate();
 
-  const fetchProfileImageURL = async () => {
-    if (topicData?.uid) {
-      const imageURL = await getProfileImageURL(topicData.uid);
-      console.log("Fetched Image URL:", imageURL);
-      setProfileImageURL(imageURL);
-    } else {
-      console.error("topicData or topicData.uid is undefined");
-    }
+  const fetchProfileImageURL = async (uid: string) => {
+    const imageURL = await getProfileImageURL(uid);
+    setProfileImageURL(imageURL);
   };
 
   const handleEditorChange = (content: string) => {
@@ -98,12 +93,17 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
   React.useEffect(() => {
     const fetchSelectedTopicData = async () => {
       const selectedTopicData = await fetchSelectedTopic(topicId);
-      setTopicData(selectedTopicData);
+      if (selectedTopicData && selectedTopicData.uid) {
+        setTopicData(selectedTopicData);
+        fetchProfileImageURL(selectedTopicData.uid);
+      } else {
+        console.error("Error: selectedTopicData is invalid", selectedTopicData);
+        setTopicData(null);
+      }
     };
 
     if (isOpen) {
       fetchSelectedTopicData();
-      fetchProfileImageURL();
     } else {
       setTopicData(null);
     }
@@ -224,7 +224,7 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
           {/* Reply */}
           <form>
             {/* {topicData.displayName} */}
-            <div className="px-10 py-16 flex flex-auto">
+            <div className="px-10 py-16 flex">
               <div id="topic-content" className="w-3/5 px-10 py-8 rounded-xl">
                 <p
                   id="topic-title"
@@ -281,22 +281,31 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
                   </div>
                 </div>
 
-                <div className="mt-8 grid grid-cols-4 text-center font-semibold">
-                  <div className="">
-                    <p className="text-xs">REPLY</p>
-                    <p>{topicData?.replyList.length}</p>
+                <div className="absolute mt-20">
+                  <div className="mt-8 grid grid-cols-4 text-center font-semibold">
+                    <div className="">
+                      <p className="text-xs">REPLY</p>
+                      <p>{topicData?.replyList.length}</p>
+                    </div>
+                    <div className="">
+                      <p className="text-xs">VIEWS</p>
+                      <p>{topicData?.views}</p>
+                    </div>
+                    <div className="">
+                      <p className="text-xs">LIKES</p>
+                      <p>{topicData?.likeCount}</p>
+                    </div>
+                    <div className="">
+                      <p className="text-xs">LAST REPLY</p>
+                      <p>None</p>
+                    </div>
                   </div>
-                  <div className="">
-                    <p className="text-xs">VIEWS</p>
-                    <p>{topicData?.views}</p>
-                  </div>
-                  <div className="">
-                    <p className="text-xs">LIKES</p>
-                    <p>{topicData?.likeCount}</p>
-                  </div>
-                  <div className="">
-                    <p className="text-xs">LAST REPLY</p>
-                    <p>{topicData?.replyList}</p>
+                  <div className="mt-12 flex">
+                    <div className="mr-2 w-10 h-10 bg-red-200 rounded-full" />
+                    <div className="mr-2 w-10 h-10 bg-red-300 rounded-full" />
+                    <div className="mr-2 w-10 h-10 bg-red-400 rounded-full" />
+                    <div className="mr-2 w-10 h-10 bg-red-500 rounded-full" />
+                    <div className="mr-2 w-10 h-10 bg-red-600 rounded-full" />
                   </div>
                 </div>
               </div>

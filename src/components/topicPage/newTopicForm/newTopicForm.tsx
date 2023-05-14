@@ -98,7 +98,7 @@ const NewTopicForm: React.FC<NewTopicFormProps> = ({
         currentUser.uid,
         displayName,
         topicTitle,
-        category,
+        categoryName,
         selectedTags,
         topicBody,
         postedDate

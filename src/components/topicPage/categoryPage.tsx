@@ -12,7 +12,12 @@ import NewTopicForm from "./newTopicForm/newTopicForm";
 import LoginAlertModal from "../loginPage/loginAlertModal/loginAlertModal";
 import TopicContentDialog from "./topicContentDialog/topicContentDialog";
 
-import { getCategoryName, getTags, fetchTopics } from "../../api";
+import {
+  getCategoryName,
+  getTags,
+  fetchTopics,
+  getProfileImageURL,
+} from "../../api";
 
 import "./categoryPage.css";
 
@@ -43,6 +48,9 @@ const CategoryPage: React.FC = () => {
 
   const [topicContentOpen, setTopicContentOpen] = useState(false);
   const [selectedTopicId, setSelectedTopicId] = useState("");
+  const [profileImages, setProfileImages] = useState<{ [key: string]: string }>(
+    {}
+  );
 
   const tagCategory = tags.find((tags) => tags.category === category?.name);
   const filteredTopics = topics.filter(
@@ -88,17 +96,24 @@ const CategoryPage: React.FC = () => {
 
   useEffect(() => {
     const auth = getAuth();
+    let newProfileImages: { [key: string]: string } = {};
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setCurrentUser(user);
       }
     });
+
     const fetchAllTopics = async () => {
       try {
         const topicsData = await fetchTopics();
-
         if (Array.isArray(topicsData.topics)) {
           const topicsArray = topicsData.topics;
+          let newProfileImages: { [key: string]: string } = {};
+          for (let topic of topicsArray) {
+            const imageURL = await getProfileImageURL(topic.uid);
+            newProfileImages[topic.uid] = imageURL;
+          }
+          setProfileImages(newProfileImages);
           setTopics(topicsArray);
         } else {
           console.error("Invalid topics data");
@@ -107,6 +122,7 @@ const CategoryPage: React.FC = () => {
         console.error("Error in fetchAllTopics:", error);
       }
     };
+
     fetchAllTopics();
 
     return () => {
@@ -203,7 +219,16 @@ const CategoryPage: React.FC = () => {
               onClick={() => handleTopicClick(topic._id)}
             >
               <td className="w-6/12">{topic.topicTitle}</td>
-              <td className="w-3/12">{topic.displayName}</td>
+              <td className="w-3/12">
+                <div
+                  className="w-10 h-10 mr-2 bg-slate-600 rounded-full"
+                  style={{
+                    backgroundImage: `url(${profileImages[topic.uid]})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                />
+              </td>
               <td className="w-2/12">{topic.replyList.length}</td>
               <td className="w-1/12">{topic.views}</td>
             </tr>
