@@ -7,12 +7,27 @@
   transition: transform 0.2s ease-out;
 }
 
+#close-reply-topic-button {
+  position: absolute;
+  cursor: pointer;
+  transition: transform 0.2s ease-out;
+}
+
 #close-topic-button:hover {
   transform: rotate(90deg);
   color: var(--fireEngineRed);
 }
 
+#close-reply-topic-button:hover {
+  transform: rotate(90deg);
+  color: var(--fireEngineRed);
+}
+
 #close-topic-button:not(:hover) {
+  transform: rotate(0deg);
+}
+
+#close-reply-topic-button:not(:hover) {
   transform: rotate(0deg);
 }
 
@@ -28,4 +43,8 @@
 
 #topic-body {
   line-height: 1.6;
+}
+
+#side-menu {
+  z-index: 9999;
 }

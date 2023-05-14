@@ -89,7 +89,6 @@ const CategoryPage: React.FC = () => {
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      console.log(user);
       if (user) {
         setCurrentUser(user);
       }

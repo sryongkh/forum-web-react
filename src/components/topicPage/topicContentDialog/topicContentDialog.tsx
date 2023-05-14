@@ -6,6 +6,7 @@ import "./topicContentDialog.css";
 import { fetchSelectedTopic } from "../../../api";
 
 import Dialog from "@mui/material/Dialog";
+import Drawer from "@mui/material/Drawer";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -46,10 +47,13 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
   onRequestClose,
   topicId,
 }) => {
-  // const [open, setOpen] = React.useState(false);
+  const sideMenuRef = React.useRef<HTMLDivElement | null>(null);
+
   const [topicData, setTopicData] = React.useState<TopicData | null>(null);
   const [isLiked, setIsLiked] = React.useState(false);
   const [isBookmark, setIsBookmark] = React.useState(false);
+  const [replyOpen, setReplyOpen] = React.useState(false);
+
   // const topicContent = topicData.find((data) => data)
 
   // const navigate = useNavigate();
@@ -60,6 +64,17 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
   const handleBookmarkClick = () => {
     setIsBookmark((prevState: any) => !prevState);
   };
+
+  const handleReplyClick = () => {
+    setReplyOpen((prevState: any) => {
+      const newState = !prevState;
+      return newState;
+    });
+  };
+
+  const handleReplyClickClose = React.useCallback(() => {
+    setReplyOpen(false);
+  }, []);
 
   React.useEffect(() => {
     const fetchSelectedTopicData = async () => {
@@ -98,6 +113,24 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
             icon={faXmark}
             onClick={onRequestClose}
           />
+          {/* Reply */}
+          {replyOpen && (
+            <div className="absolute block w-full h-full bg-white bg-opacity-40">
+              <div
+                ref={sideMenuRef}
+                id="side-menu"
+                className="block w-2/5 h-full absolute right-0 bg-gray-400 p-4"
+              >
+                {/* เมนูด้านข้าง */}
+                <FontAwesomeIcon
+                  id="close-reply-topic-button"
+                  icon={faXmark}
+                  onClick={handleReplyClickClose}
+                  className="cursor-pointer"
+                />
+              </div>
+            </div>
+          )}
           <form>
             {/* {topicData.displayName} */}
             <div className="px-10 py-16 flex flex-auto">
@@ -139,11 +172,14 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
                       style={{ color: isBookmark ? "" : "black" }}
                     />
                   </div>
-                  <div className="flex justify-center items-center bg-slate-700 bg-opacity-25 mt-8 ml-2 px-3 py-1 rounded-full text-sm font-medium">
+
+                  <div
+                    className="flex justify-center items-center bg-slate-700 bg-opacity-25 mt-8 ml-2 px-3 py-1 rounded-full text-sm font-medium cursor-pointer"
+                    onClick={handleReplyClick}
+                  >
                     <FontAwesomeIcon
                       icon={faReply}
-                      // onClick={handleBookmarkClick}
-                      className="cursor-pointer"
+                      className=""
                       style={{ color: "black" }}
                     />
                     &nbsp;Reply
@@ -170,20 +206,11 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
                 </div>
               </div>
 
+              {/* Right Side */}
               <div className="w-full ml-24">
                 <h1>No Reply</h1>
               </div>
             </div>
-            {/* <div id="submit-button" className="fixed right-8 bottom-4">
-              <button
-                id="btn-new-topic"
-                className="h-14 px-5 rounded-md font-bold text-white"
-                style={{ backgroundColor: "var(--redPantone)" }}
-                type="submit"
-              >
-                Create Post
-              </button>
-            </div> */}
           </form>
         </div>
       </Dialog>
