@@ -29,19 +29,6 @@ const Header: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
-  // const fetchCategories = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:5000/categories");
-  //     setCategories(response.data.topics);
-  //   } catch (err) {
-  //     if (err instanceof Error) {
-  //       console.error("Error fetching topics:", err.message);
-  //     } else {
-  //       console.error("Unknown error occurred:", err);
-  //     }
-  //   }
-  // };
-
   const navigate = useNavigate();
 
   const handleIndexPage = () => {
@@ -49,11 +36,6 @@ const Header: React.FC = () => {
   };
 
   useEffect(() => {
-    // fetchCategories();
-    // const interval = setInterval(() => {
-    //   fetchCategories();
-    // }, 3000);
-
     const auth = getAuth();
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {

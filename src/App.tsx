@@ -12,6 +12,7 @@ import LoginPage from "./components/loginPage/loginPage";
 import SignupPage from "./components/loginPage/signUp/signupPage";
 import ForgotPasswordPage from "./components/loginPage/forgetPasswordPage/forgetPasswordPage";
 import UserProfilePage from "./components/loginPage/userProfile/userProfile";
+import ForumListPopular from "./components/forumPage/forumListPopular/forumListPopular";
 
 function App() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -24,6 +25,7 @@ function App() {
         <div className="h-full mx-24">
           <Routes>
             <Route path="/" element={<ForumPage />} index />
+            <Route path="/category/popular" element={<ForumListPopular />} />
             <Route path="/category/:name" element={<TopicPage />} />
             <Route
               path="/login"
