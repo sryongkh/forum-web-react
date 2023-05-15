@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getAuth, User } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import firebaseConfig from "../../../firebase";
@@ -17,11 +17,13 @@ const auth = getAuth();
 
 const SelectTopicTab = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [user, setUser] = React.useState<User | null>(null);
   const [newCategory, setNewCategory] = React.useState<JSX.Element[]>([]);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isModalLoginOpen, setIsModalLoginOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState("CATEGORIES");
 
   const handleNewCategoryClick = () => {
     if (!user) {
@@ -71,12 +73,23 @@ const SelectTopicTab = () => {
     };
   }, []);
 
+  React.useEffect(() => {
+    if (location.pathname === "/") {
+      setSelected("CATEGORIES");
+    } else if (location.pathname === "/category/popular") {
+      setSelected("POPULAR");
+    }
+  }, [location]);
+
   return (
     <>
       <div id="header" className="grid grid-cols-2 my-10">
         <div id="filter" className="flex items-center font-bold">
           <a
-            className="cursor-pointer"
+            id="filter-menu"
+            className={`cursor-pointer ${
+              selected === "POPULAR" ? "text-red-500" : "text-gray-400"
+            }`}
             onClick={() => {
               handlePopularClick();
             }}
@@ -84,7 +97,10 @@ const SelectTopicTab = () => {
             POPULAR
           </a>
           <a
-            className="ml-16 cursor-pointer"
+            id="filter-menu"
+            className={`ml-16 cursor-pointer ${
+              selected === "CATEGORIES" ? "text-red-500" : "text-gray-400"
+            }`}
             onClick={() => {
               handleCategoriesClick();
             }}
@@ -106,6 +122,7 @@ const SelectTopicTab = () => {
             />
             New Categories
           </button>
+
           <NewCategoryModal
             isOpen={isModalOpen}
             onRequestClose={() => setIsModalOpen(false)}
