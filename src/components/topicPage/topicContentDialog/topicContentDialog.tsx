@@ -4,6 +4,7 @@ import Parser from "html-react-parser";
 
 import "./topicContentDialog.css";
 import { fetchSelectedTopic, getProfileImageURL } from "../../../api";
+import ReplyDialog from "./replyBox/replyBox";
 
 import Dialog from "@mui/material/Dialog";
 import Collapse from "@mui/material/Collapse";
@@ -144,73 +145,8 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
             >
               {/* เมนูด้านข้าง */}
 
-              {/* Reply */}
-              <div className="px-5 mt-14">
-                <div className="flex">
-                  <div className="w-8 h-8 p-5 flex justify-center items-center border rounded-sm">
-                    <FontAwesomeIcon
-                      icon={faReply}
-                      className="text-lg"
-                      style={{ color: "var(--fireEngineRed)" }}
-                    />
-                  </div>
-                  <div className="px-5 font-extrabold">
-                    <p>{topicData?.topicTitle}</p>
-                  </div>
-                </div>
-                <div className="mt-5">
-                  <Editor
-                    apiKey="ar3bll71u5ai3pbp02zqh8epqj4guoge5sifne7wmu72mhwl"
-                    init={{
-                      height: 300,
-                      menubar: false,
-                      plugins: "advlist lists link",
-                      toolbar:
-                        "undo redo | formatselect | bold italic | \
-                    alignleft aligncenter alignright alignjustify | \
-                    bullist numlist outdent indent | link",
-                    }}
-                    onEditorChange={handleEditorChange}
-                  />
-                </div>
-
-                <div className="mt-3 flex items-center">
-                  <Checkbox
-                    {...label}
-                    className="w-0 h-0"
-                    sx={{
-                      color: "var(--fireEngineRed)",
-                      "&.Mui-checked": {
-                        color: "var(--fireEngineRed)",
-                      },
-                    }}
-                  />
-                  &nbsp;&nbsp;
-                  <p className="text-sm">Notify me when a reply is posted</p>
-                </div>
-
-                <div className="w-full absolute bottom-6 right-5 text-end">
-                  <button
-                    id="btn-new-category"
-                    className="h-14 px-5 rounded-md font-bold"
-                    style={{ backgroundColor: "var(--antiFlashWhite)" }}
-                    onClick={handleReplyClickClose}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    id="btn-new-category"
-                    className="h-14 ml-3 px-5 rounded-md font-bold"
-                    style={{
-                      backgroundColor: "var(--fireEngineRed)",
-                      color: "var(--antiFlashWhite)",
-                    }}
-                    // onClick={}
-                  >
-                    Add Message
-                  </button>
-                </div>
-              </div>
+              {/* Reply Dialog */}
+              <ReplyDialog />
             </div>
           </div>
         </Collapse>
@@ -281,22 +217,22 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
                   </div>
                 </div>
 
-                <div className="absolute mt-20">
+                <div className="mt-10 max-w-full">
                   <div className="mt-8 grid grid-cols-4 text-center font-semibold">
                     <div className="">
-                      <p className="text-xs">REPLY</p>
+                      <p className="text-small">REPLY</p>
                       <p>{topicData?.replyList.length}</p>
                     </div>
                     <div className="">
-                      <p className="text-xs">VIEWS</p>
+                      <p className="text-small">VIEWS</p>
                       <p>{topicData?.views}</p>
                     </div>
                     <div className="">
-                      <p className="text-xs">LIKES</p>
+                      <p className="text-small">LIKES</p>
                       <p>{topicData?.likeCount}</p>
                     </div>
                     <div className="">
-                      <p className="text-xs">LAST REPLY</p>
+                      <p className="text-small">LAST REPLY</p>
                       <p>None</p>
                     </div>
                   </div>
@@ -310,9 +246,9 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
                 </div>
               </div>
 
-              {/* Right Side */}
-              <div className="w-full ml-24">
-                <h1>No Reply</h1>
+              {/* Reply Side */}
+              <div className="w-full ml-20">
+                <ReplyDialog />
               </div>
             </div>
           </form>

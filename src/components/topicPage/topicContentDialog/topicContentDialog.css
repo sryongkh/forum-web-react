@@ -18,6 +18,10 @@
 }
 
 /* Content */
+.text-small {
+  font-size: 10px;
+  font-weight: 200;
+}
 
 #topic-content {
   background-color: var(--spaceCadet);

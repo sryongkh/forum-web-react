@@ -272,3 +272,14 @@ export const fetchLastestTopics = async () => {
     }
   }
 };
+
+export const getViews = async (topicId: string) => {
+  const response = await axios.get(`${API_URL}/topics/${topicId}`);
+  return response.data.views;
+};
+
+export const incrementViews = async (topicId: string) => {
+  const response = await axios.put(`${API_URL}/topics/${topicId}/increment-views`);
+  return response.data.views;
+}
+

@@ -7,6 +7,8 @@ import {
   getProfileImageURL,
 } from "../../../api";
 
+import Skeleton from "@mui/material/Skeleton";
+
 interface categoriesCardProps {
   name: string;
   bannerColor: string;
@@ -118,7 +120,7 @@ const CategoriesCard: React.FC<categoriesCardProps> = ({
       </div>
       <div id="information-category-2" className="mt-4">
         <p className="text-xs">LAST TOPIC</p>
-        <div id="count-categories-value" className="flex mt-2">
+        <div id="count-categories-value" className="h-full flex mt-2">
           {filteredLastestTopics.length > 0 ? (
             filteredLastestTopics.map((item) => {
               return (
@@ -135,16 +137,15 @@ const CategoriesCard: React.FC<categoriesCardProps> = ({
                         backgroundPosition: "center",
                       }}
                     />
-                    <p className="ml-2 font-medium">{item.displayName}</p>
+                    <div className="w-72 mx-2 text-xs">{item.topicTitle}</div>
                   </div>
-
-                  <div className="w-full mt-2 text-xs">{item.topicTitle}</div>
                 </div>
               );
             })[0]
           ) : (
-            <div className="h-9 mx-4 text-xs">
-              <span>No latest topic</span>
+            <div className="flex items-center">
+              <Skeleton variant="circular" width={36} height={36} />
+              <Skeleton variant="rounded" width={288} height={36} className="mx-1" />
             </div>
           )}
         </div>

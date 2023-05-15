@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
 import { User, getAuth } from "firebase/auth";
@@ -7,6 +7,8 @@ import { User, getAuth } from "firebase/auth";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
+import Skeleton from "@mui/material/Skeleton";
 
 import NewTopicForm from "./newTopicForm/newTopicForm";
 import LoginAlertModal from "../loginPage/loginAlertModal/loginAlertModal";
@@ -17,6 +19,8 @@ import {
   getTags,
   fetchTopics,
   getProfileImageURL,
+  getViews,
+  incrementViews
 } from "../../api";
 
 import "./categoryPage.css";
@@ -45,6 +49,7 @@ const CategoryPage: React.FC = () => {
   const [bannerColor, setBannerColor] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalLoginOpen, setIsModalLoginOpen] = useState(false);
+  const [views, setViews] = useState(0);
 
   const [topicContentOpen, setTopicContentOpen] = useState(false);
   const [selectedTopicId, setSelectedTopicId] = useState("");
@@ -84,9 +89,11 @@ const CategoryPage: React.FC = () => {
     setTags(tagsData);
   };
 
-  const handleTopicClick = (topicId: string) => {
+  const handleTopicClick = async (topicId: string) => {
     setTopicContentOpen(true);
     setSelectedTopicId(topicId);
+    const updatedViews = await incrementViews(topicId);
+    setViews(updatedViews);
   };
 
   useEffect(() => {
@@ -95,8 +102,13 @@ const CategoryPage: React.FC = () => {
   }, [name]);
 
   useEffect(() => {
+    getViews(selectedTopicId).then((response) => {
+      setViews(response ? response.views : 0);
+    });
+  }, [selectedTopicId]);
+
+  useEffect(() => {
     const auth = getAuth();
-    let newProfileImages: { [key: string]: string } = {};
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setCurrentUser(user);
@@ -211,28 +223,48 @@ const CategoryPage: React.FC = () => {
             <td className="w-2/12">REPLIES</td>
             <td className="w-1/12">VIEWS</td>
           </tr>
-          {filteredTopics.map((topic) => (
+          {filteredTopics.length > 0 ? (
+            filteredTopics.map((topic) => (
+              <tr
+                key={topic._id}
+                id="topic-row"
+                className="h-16 text-sm font-bold cursor-pointer"
+                onClick={() => handleTopicClick(topic._id)}
+              >
+                <td className="w-6/12">{topic.topicTitle}</td>
+                <td className="w-3/12">
+                  <div
+                    className="w-10 h-10 mr-2 bg-slate-600 rounded-full"
+                    style={{
+                      backgroundImage: `url(${profileImages[topic.uid]})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  />
+                </td>
+                <td className="w-2/12">{topic.replyList.length}</td>
+                <td className="w-1/12">{topic.views}</td>
+              </tr>
+            ))
+          ) : (
             <tr
-              key={topic._id}
               id="topic-row"
               className="h-16 text-sm font-bold cursor-pointer"
-              onClick={() => handleTopicClick(topic._id)}
             >
-              <td className="w-6/12">{topic.topicTitle}</td>
-              <td className="w-3/12">
-                <div
-                  className="w-10 h-10 mr-2 bg-slate-600 rounded-full"
-                  style={{
-                    backgroundImage: `url(${profileImages[topic.uid]})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                />
+              <td className="w-6/12">
+                <Skeleton variant="rounded" width={550} className="mx-1" />
               </td>
-              <td className="w-2/12">{topic.replyList.length}</td>
-              <td className="w-1/12">{topic.views}</td>
+              <td className="w-3/12">
+                <Skeleton variant="circular" width={36} height={36} />
+              </td>
+              <td className="w-2/12">
+                <Skeleton variant="rounded" width={100} className="mx-1" />
+              </td>
+              <td className="w-1/12">
+                <Skeleton variant="rounded" width={50} className="mx-1" />
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </>
