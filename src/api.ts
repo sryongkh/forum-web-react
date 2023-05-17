@@ -279,7 +279,91 @@ export const getViews = async (topicId: string) => {
 };
 
 export const incrementViews = async (topicId: string) => {
-  const response = await axios.put(`${API_URL}/topics/${topicId}/increment-views`);
+  const response = await axios.put(
+    `${API_URL}/topics/${topicId}/increment-views`
+  );
   return response.data.views;
-}
+};
 
+// Thread Reply
+export const createThread = async (
+  topicId: string,
+  content: string,
+  uid: string,
+  displayName: string,
+  datePost: string,
+  timePost: string
+) => {
+  try {
+    const response = await axios.post(`${API_URL}/threads/create-thread`, {
+      topicId,
+      content,
+      uid,
+      displayName,
+      datePost,
+      timePost,
+    });
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'createThread' in api.ts => ", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
+export const getThreads = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/threads`);
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'getThreads' in api.ts => ", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
+export const getSingleThread = async (id: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/threads/${id}`);
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'getSingleThread' in api.ts => ", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
+export const addReply = async (id: string, content: string, author: string) => {
+  try {
+    const response = await axios.post(`${API_URL}/threads/${id}/replies`, {
+      content,
+      author,
+    });
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'addReply' in api.ts => ", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};
+
+export const getReplies = async (id: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/threads/${id}/replies`);
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("From 'getReplies' in api.ts => ", err.message);
+    } else {
+      console.error("Unknown error occurred:", err);
+    }
+  }
+};

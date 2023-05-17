@@ -83,7 +83,7 @@ const CategoriesCard: React.FC<categoriesCardProps> = ({
     >
       <div
         id="category-banner"
-        className="h-20 px-8 mb-8 text-white rounded-2xl flex items-center"
+        className="h-20 px-8 mb-8 text-white rounded-2xl flex items-center shadow-md"
         style={{ backgroundColor: bannerColor }}
       >
         <p id="category-name">{name}</p>
@@ -113,7 +113,7 @@ const CategoriesCard: React.FC<categoriesCardProps> = ({
                         : `${item.datePost}, ${item.timePost}`;
                     }
                   )[0]
-                : "No lastest topic"}
+                : <Skeleton variant="rounded" width={200} height={20} className="mt-1" />}
             </span>
           </div>
         </div>

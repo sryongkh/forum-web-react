@@ -1,4 +1,5 @@
 import React from "react";
+import Parser from "html-react-parser";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,7 +14,22 @@ import {
   faBookmark as farBookmark,
 } from "@fortawesome/free-regular-svg-icons";
 
-const ReplyDialog = () => {
+import ReplyThread from "./replyThreadItem";
+
+type Thread = {
+  _id: string;
+  topicId: string;
+  displayName: string;
+  datePost: string;
+  timePost: string;
+  content: string;
+};
+
+interface ThreadItemProps {
+  thread: Thread;
+}
+
+const ThreadItem: React.FC<ThreadItemProps> = ({ thread }) => {
   const [isLiked, setIsLiked] = React.useState(false);
   const [isBookmark, setIsBookmark] = React.useState(false);
   const [isExpandReply, setIsExpandReply] = React.useState(false);
@@ -49,11 +65,16 @@ const ReplyDialog = () => {
         <div className="flex items-center">
           <div className="w-9 h-9 rounded-full bg-slate-800" />
           <div className="flex flex-col ml-3">
-            <p className="font-bold">Test</p>
-            <p className="text-xs">Date Time</p>
+            <p className="font-bold">{thread.displayName}</p>
+            <div className="flex">
+              <p className="text-xs mr-1">{thread.datePost}</p>
+              <p className="text-xs">{thread.timePost}</p>
+            </div>
           </div>
         </div>
-        <p className="my-3 text-sm font-medium">Hi, so how did you do that</p>
+        <div className="my-3 text-sm font-medium">
+          {thread?.content && Parser(thread.content)}
+        </div>
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <FontAwesomeIcon
@@ -69,7 +90,7 @@ const ReplyDialog = () => {
             <div className="flex justify-center items-center bg-slate-700 bg-opacity-25 px-3 py-1 rounded-full text-sm font-medium">
               <p>0&nbsp;&nbsp;</p>
               <FontAwesomeIcon
-                icon={isLiked ? faChevronDown : faChevronUp}
+                icon={isLiked ? fasHeart : farHeart}
                 onClick={handleLikeClick}
                 className="cursor-pointer"
                 style={{ color: isLiked ? "red" : "black" }}
@@ -94,9 +115,9 @@ const ReplyDialog = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col mt-4 p-4 bg-gray-100 rounded-xl shadow-lg">Test</div>
+      {/* <ReplyThread /> */}
     </>
   );
 };
 
-export default ReplyDialog;
+export default ThreadItem;

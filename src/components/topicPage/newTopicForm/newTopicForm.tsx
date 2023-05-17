@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import { User, getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import firebaseConfig from "../../../firebase";
@@ -106,7 +106,7 @@ const NewTopicForm: React.FC<NewTopicFormProps> = ({
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setCurrentUser(user);
@@ -120,7 +120,7 @@ const NewTopicForm: React.FC<NewTopicFormProps> = ({
     };
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchAllTags = async () => {
       const tags = await fetchTags();
       setTags(tags.tags.map((tag: any) => tag.tagName).flat());

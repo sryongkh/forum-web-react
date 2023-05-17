@@ -1,0 +1,8 @@
+#filter-menu:hover {
+    color: var(--redPantone);
+    transition: 0.2s ease-in;
+}
+
+#filter-menu:hover::after {
+    transition: 0.2s ease-in;
+}

@@ -5,6 +5,7 @@ import { initializeApp } from "firebase/app";
 import firebaseConfig from "../../../firebase";
 
 import { createCategories, createTags, fetchCategories } from "../../../api";
+import "./selectTopic.css";
 import NewCategoryModal from "../newCategoryModal/newCategoryModal";
 import LoginAlertModal from "../../loginPage/loginAlertModal/loginAlertModal";
 import CategoriesCard from "../categoriesCard/categoriesCard";

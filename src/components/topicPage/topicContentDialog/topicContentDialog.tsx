@@ -1,17 +1,21 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Parser from "html-react-parser";
 
 import "./topicContentDialog.css";
-import { fetchSelectedTopic, getProfileImageURL } from "../../../api";
-import ReplyDialog from "./replyBox/replyBox";
+import {
+  fetchSelectedTopic,
+  getProfileImageURL,
+  createThread,
+} from "../../../api";
+import ReplyBox from "./threadBox/threadBox";
+import ReplyDialog from "./replyDialog/replyDialog";
 
 import Dialog from "@mui/material/Dialog";
 import Collapse from "@mui/material/Collapse";
-import Checkbox from "@mui/material/Checkbox";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Editor } from "@tinymce/tinymce-react";
+
 import {
   faXmark,
   faHeart as fasHeart,
@@ -23,7 +27,6 @@ import {
   faBookmark as farBookmark,
 } from "@fortawesome/free-regular-svg-icons";
 
-const label = { inputProps: { "aria-label": "Checkbox demo" } };
 interface topicFormProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -56,7 +59,7 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
   const [isLiked, setIsLiked] = React.useState(false);
   const [isBookmark, setIsBookmark] = React.useState(false);
   const [replyOpen, setReplyOpen] = React.useState(false);
-  const [reply, setReply] = React.useState("");
+  // const [replyDialogOpen, setReplyDialogOpen] = React.useState(false);
   const [profileImageURL, setProfileImageURL] = React.useState("");
 
   // const topicContent = topicData.find((data) => data)
@@ -66,10 +69,6 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
   const fetchProfileImageURL = async (uid: string) => {
     const imageURL = await getProfileImageURL(uid);
     setProfileImageURL(imageURL);
-  };
-
-  const handleEditorChange = (content: string) => {
-    setReply(content);
   };
 
   const handleLikeClick = () => {
@@ -90,6 +89,25 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
   const handleReplyClickClose = React.useCallback(() => {
     setReplyOpen(false);
   }, []);
+
+  const handleReplySubmit = (
+    replyContext: string,
+    uid: string,
+    displayName: string,
+    datePost: string,
+    timePost: string
+  ) => {
+    console.log("handleReplySubmit called");
+    if (topicData?._id)
+      createThread(
+        topicData?._id,
+        replyContext,
+        uid,
+        displayName,
+        datePost,
+        timePost
+      );
+  };
 
   React.useEffect(() => {
     const fetchSelectedTopicData = async () => {
@@ -146,7 +164,13 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
               {/* เมนูด้านข้าง */}
 
               {/* Reply Dialog */}
-              <ReplyDialog />
+              {replyOpen && (
+                <ReplyDialog
+                  topicTitle={topicData?.topicTitle}
+                  handleReplyClickClose={handleReplyClickClose}
+                  handleSubmitReply={handleReplySubmit}
+                />
+              )}
             </div>
           </div>
         </Collapse>
@@ -159,7 +183,6 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
           />
           {/* Reply */}
           <form>
-            {/* {topicData.displayName} */}
             <div className="px-10 py-16 flex">
               <div id="topic-content" className="w-3/5 px-10 py-8 rounded-xl">
                 <p
@@ -247,8 +270,8 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
               </div>
 
               {/* Reply Side */}
-              <div className="w-full ml-20">
-                <ReplyDialog />
+              <div className="w-full ml-16">
+                {topicData && <ReplyBox topicId={topicId} />}
               </div>
             </div>
           </form>
