@@ -8,8 +8,6 @@ import Checkbox from "@mui/material/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
 
-import { createThread } from "../../../../api";
-
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 interface ReplyDialogProps {

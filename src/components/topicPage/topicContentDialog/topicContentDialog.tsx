@@ -8,7 +8,7 @@ import {
   getProfileImageURL,
   createThread,
 } from "../../../api";
-import ReplyBox from "./threadBox/threadBox";
+import ThreadBox from "./threadBox/threadBox";
 import ReplyDialog from "./replyDialog/replyDialog";
 
 import Dialog from "@mui/material/Dialog";
@@ -61,6 +61,7 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
   const [replyOpen, setReplyOpen] = React.useState(false);
   // const [replyDialogOpen, setReplyDialogOpen] = React.useState(false);
   const [profileImageURL, setProfileImageURL] = React.useState("");
+  const [replyTarget, setReplyTarget] = React.useState("");
 
   // const topicContent = topicData.find((data) => data)
 
@@ -271,7 +272,12 @@ const TopicContentDialog: React.FC<topicFormProps> = ({
 
               {/* Reply Side */}
               <div className="w-full ml-16">
-                {topicData && <ReplyBox topicId={topicId} />}
+                {topicData && (
+                  <ThreadBox
+                    topicId={topicId}
+                    handleReplyClick={handleReplyClick}
+                  />
+                )}
               </div>
             </div>
           </form>

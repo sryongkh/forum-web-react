@@ -14,10 +14,14 @@ type Thread = {
 
 interface ReplyBoxProps {
   topicId: string | undefined;
+  handleReplyClick: (displayName: string) => void; // ปรับปรุงที่นี่
 }
 
-const ReplyBox: React.FC<ReplyBoxProps> = ({ topicId }) => {
+const ThreadBox: React.FC<ReplyBoxProps> = ({ topicId, handleReplyClick }) => {
   const [threadsData, setThreadsData] = React.useState<Thread[]>([]);
+  const [replyTarget, setReplyTarget] = React.useState<string | null>(null);
+  const [replyOpen, setReplyOpen] = React.useState(false);
+  const [isThreadReply, setIsThreadReply] = React.useState(false);
 
   React.useEffect(() => {
     const fetchThreads = async () => {
@@ -35,7 +39,13 @@ const ReplyBox: React.FC<ReplyBoxProps> = ({ topicId }) => {
       {threadsData.length > 0 ? (
         threadsData
           .filter((thread) => thread?.topicId === topicId)
-          .map((thread) => <ThreadItem key={thread._id} thread={thread} />)
+          .map((thread) => (
+            <ThreadItem
+              key={thread._id}
+              thread={thread}
+              handleReplyClick={handleReplyClick}
+            />
+          ))
       ) : (
         <div>Test</div>
       )}
@@ -52,11 +62,13 @@ const ReplyBox: React.FC<ReplyBoxProps> = ({ topicId }) => {
         <div className="flex ml-12 text-xs">
           <p className="">3 Days</p>
           <p className="mx-2">Like</p>
-          <p className="">Reply</p>
+          <p className="">
+            Reply
+          </p>
         </div>
       </div>
     </>
   );
 };
 
-export default ReplyBox;
+export default ThreadBox;

@@ -14,7 +14,7 @@ import {
   faBookmark as farBookmark,
 } from "@fortawesome/free-regular-svg-icons";
 
-import ReplyThread from "./replyThreadItem";
+// import ReplyThread from "./replyThreadItem";
 
 type Thread = {
   _id: string;
@@ -27,18 +27,17 @@ type Thread = {
 
 interface ThreadItemProps {
   thread: Thread;
+  handleReplyClick: (displayName: string) => void;
 }
 
-const ThreadItem: React.FC<ThreadItemProps> = ({ thread }) => {
+const ThreadItem: React.FC<ThreadItemProps> = ({
+  thread,
+  handleReplyClick,
+}) => {
   const [isLiked, setIsLiked] = React.useState(false);
   const [isBookmark, setIsBookmark] = React.useState(false);
   const [isExpandReply, setIsExpandReply] = React.useState(false);
   const [replyOpen, setReplyOpen] = React.useState(false);
-  const [reply, setReply] = React.useState("");
-
-  const handleEditorChange = (content: string) => {
-    setReply(content);
-  };
 
   const handleLikeClick = () => {
     setIsLiked((prevState: any) => !prevState);
@@ -48,20 +47,21 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ thread }) => {
     setIsBookmark((prevState: any) => !prevState);
   };
 
-  const handleReplyClick = () => {
-    setReplyOpen((prevState: any) => {
-      const newState = !prevState;
-      return newState;
-    });
-  };
-
   const handleExpandReplyClick = () => {
     setIsExpandReply((prevState: any) => !prevState);
   };
 
+  const handleThreadReplyClick = () => {
+    setReplyOpen((prevState: any) => {
+      const newState = !prevState;
+      return newState;
+    });
+    handleReplyClick(thread.displayName);
+  };
+
   return (
     <>
-      <div className="flex flex-col p-4 bg-white rounded-xl shadow-lg">
+      <div className="flex flex-col mb-4 p-4 bg-white rounded-xl shadow-lg">
         <div className="flex items-center">
           <div className="w-9 h-9 rounded-full bg-slate-800" />
           <div className="flex flex-col ml-3">
@@ -107,7 +107,7 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ thread }) => {
 
             <div
               className="flex justify-center items-center bg-slate-700 bg-opacity-25 ml-2 px-3 py-1 rounded-full text-sm font-medium cursor-pointer"
-              onClick={handleReplyClick}
+              onClick={handleThreadReplyClick}
             >
               <FontAwesomeIcon icon={faReply} style={{ color: "black" }} />
               &nbsp;&nbsp;Reply
