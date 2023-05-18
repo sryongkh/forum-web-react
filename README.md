@@ -25,4 +25,4 @@ Detail :
 5. ระบบจัดอันดับกระทู้ตามความนิยม
 
 
-[ https://sry-forum-web.netlify.app/ ]
+[ https://sry-web-forum.netlify.app/ ]
