@@ -10,6 +10,7 @@ import { getAuth, User } from "firebase/auth";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faBars } from "@fortawesome/free-solid-svg-icons";
+import logo from "../../assets/logo.png";
 
 // interface Topic {
 //   name: string;
@@ -58,11 +59,11 @@ const Header: React.FC = () => {
       className="rounded-t-3xl p-5 items-center h-full w-full shadow-md"
     >
       <div id="contents" className="grid items-center justify-between">
-        <div
-          id="logo"
+        <img
+          src={logo}
           className="h-11 w-11 cursor-pointer"
           onClick={handleIndexPage}
-        ></div>
+        />
         <div
           id="search"
           // className="grid items-center h-full w-full rounded-full shadow-md"

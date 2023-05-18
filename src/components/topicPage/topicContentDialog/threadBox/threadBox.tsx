@@ -69,23 +69,24 @@ const ThreadBox: React.FC<ThreadBoxProps> = ({ topicId, handleReplyClick }) => {
             );
 
             return (
-              <React.Fragment key={thread._id}>
-                <ThreadItem
-                  thread={thread}
-                  handleReplyClick={handleReplyClick}
-                />
-                {relevantReplies.length > 0 && (
-                  <ReplyThread replies={relevantReplies} />
-                )}
-              </React.Fragment>
+              <div className="overflow-auto">
+                <React.Fragment key={thread._id}>
+                  <ThreadItem
+                    thread={thread}
+                    handleReplyClick={handleReplyClick}
+                  />
+                  {relevantReplies.length > 0 && (
+                    <ReplyThread replies={relevantReplies} />
+                  )}
+                </React.Fragment>
+              </div>
             );
           })
       ) : (
-        <div>No replies</div>
+        <div className="w-full h-full">
+          <React.Fragment>No replies</React.Fragment>
+        </div>
       )}
-
-      {/* Display replies */}
-      {/* {repliesData.length > 0 && <ReplyThread replies={repliesData} />} */}
     </>
   );
 };
