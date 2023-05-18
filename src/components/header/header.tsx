@@ -57,7 +57,7 @@ const Header: React.FC = () => {
       id="navbar"
       className="rounded-t-3xl p-5 items-center h-full w-full shadow-md"
     >
-      <div id="contents" className="grid items-center">
+      <div id="contents" className="grid items-center justify-between">
         <div
           id="logo"
           className="h-11 w-11 cursor-pointer"
@@ -65,9 +65,9 @@ const Header: React.FC = () => {
         ></div>
         <div
           id="search"
-          className="grid items-center h-full w-full rounded-full shadow-md"
+          // className="grid items-center h-full w-full rounded-full shadow-md"
         >
-          <input
+          {/*<input
             id="search-box"
             className="ml-8 mr-2 bg-transparent"
             placeholder="Search"
@@ -75,11 +75,11 @@ const Header: React.FC = () => {
           <div id="vertical-hr"></div>
           <select id="search-selected" className="h-11 bg-transparent">
             <option value="all-topic-name">All</option>
-            {/* {topics.map((topic) => (
+            {topics.map((topic) => (
               <option value={topic.name} key={topic.name}>
                 {topic.name}
               </option>
-            ))} */}
+            ))}
           </select>
           <button
             id="btn-search"
@@ -89,7 +89,7 @@ const Header: React.FC = () => {
               icon={faMagnifyingGlass}
               style={{ color: "var(--white)" }}
             />
-          </button>
+          </button>*/}
         </div>
         <div id="profile-menu" className="flex justify-end items-center">
           {user ? (

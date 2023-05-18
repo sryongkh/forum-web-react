@@ -11,7 +11,7 @@ import { faReply } from "@fortawesome/free-solid-svg-icons";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 interface ReplyDialogProps {
-  topicTitle?: string;
+  target?: string;
   handleReplyClickClose: () => void;
   handleSubmitReply: (
     replyContext: string,
@@ -26,7 +26,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const ReplyDialog: React.FC<ReplyDialogProps> = ({
-  topicTitle,
+  target,
   handleReplyClickClose,
   handleSubmitReply,
 }) => {
@@ -38,6 +38,7 @@ const ReplyDialog: React.FC<ReplyDialogProps> = ({
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     const datePost = new Date().toLocaleDateString();
     const timePost = new Date().toLocaleTimeString();
 
@@ -71,7 +72,7 @@ const ReplyDialog: React.FC<ReplyDialogProps> = ({
   return (
     <>
       <form onSubmit={handleSubmit} className="px-5 mt-14">
-        <div className="flex">
+        <div className="flex items-center">
           <div className="w-8 h-8 p-5 flex justify-center items-center border rounded-sm">
             <FontAwesomeIcon
               icon={faReply}
@@ -80,7 +81,7 @@ const ReplyDialog: React.FC<ReplyDialogProps> = ({
             />
           </div>
           <div className="px-5 font-extrabold">
-            <p>{topicTitle}</p>
+            <p>{target}</p>
           </div>
         </div>
         <div className="mt-5">
@@ -97,6 +98,20 @@ const ReplyDialog: React.FC<ReplyDialogProps> = ({
             }}
             onEditorChange={handleEditorChange}
           />
+          <div className="mt-3 flex items-center">
+            <Checkbox
+              {...label}
+              className="w-0 h-0"
+              sx={{
+                color: "var(--fireEngineRed)",
+                "&.Mui-checked": {
+                  color: "var(--fireEngineRed)",
+                },
+              }}
+            />
+            &nbsp;&nbsp;
+            <p className="text-sm">Notify me when a reply is posted</p>
+          </div>
           <div className="w-full absolute bottom-6 right-5 text-end">
             <button
               id="btn-new-category"
@@ -115,47 +130,10 @@ const ReplyDialog: React.FC<ReplyDialogProps> = ({
                 backgroundColor: "var(--fireEngineRed)",
                 color: "var(--antiFlashWhite)",
               }}
-              onClick={handleSubmit}
             >
               Add Message
             </button>
           </div>
-        </div>
-        <div className="mt-3 flex items-center">
-          <Checkbox
-            {...label}
-            className="w-0 h-0"
-            sx={{
-              color: "var(--fireEngineRed)",
-              "&.Mui-checked": {
-                color: "var(--fireEngineRed)",
-              },
-            }}
-          />
-          &nbsp;&nbsp;
-          <p className="text-sm">Notify me when a reply is posted</p>
-        </div>
-
-        <div className="w-full absolute bottom-6 right-5 text-end">
-          <button
-            id="btn-new-category"
-            className="h-14 px-5 rounded-md font-bold"
-            style={{ backgroundColor: "var(--antiFlashWhite)" }}
-            onClick={handleReplyClickClose}
-          >
-            Cancel
-          </button>
-          <button
-            id="btn-new-category"
-            type="submit"
-            className="h-14 ml-3 px-5 rounded-md font-bold"
-            style={{
-              backgroundColor: "var(--fireEngineRed)",
-              color: "var(--antiFlashWhite)",
-            }}
-          >
-            Add Message
-          </button>
         </div>
       </form>
     </>

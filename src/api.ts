@@ -339,12 +339,26 @@ export const getSingleThread = async (id: string) => {
   }
 };
 
-export const addReply = async (id: string, content: string, author: string) => {
+export const addReply = async (
+  threadId: string,
+  content: string,
+  uid: string,
+  displayName: string,
+  datePost: string,
+  timePost: string
+) => {
   try {
-    const response = await axios.post(`${API_URL}/threads/${id}/replies`, {
-      content,
-      author,
-    });
+    const response = await axios.post(
+      `${API_URL}/replies/${threadId}/add-reply`,
+      {
+        threadId,
+        content,
+        uid,
+        displayName,
+        datePost,
+        timePost,
+      }
+    );
     return response.data;
   } catch (err) {
     if (err instanceof Error) {
@@ -355,15 +369,16 @@ export const addReply = async (id: string, content: string, author: string) => {
   }
 };
 
-export const getReplies = async (id: string) => {
+export const getReplies = async () => {
   try {
-    const response = await axios.get(`${API_URL}/threads/${id}/replies`);
-    return response.data;
+    const response = await axios.get(`${API_URL}/replies/list-replies`);
+    return response.data.replies;
   } catch (err) {
     if (err instanceof Error) {
       console.error("From 'getReplies' in api.ts => ", err.message);
     } else {
       console.error("Unknown error occurred:", err);
     }
+    return [];
   }
 };

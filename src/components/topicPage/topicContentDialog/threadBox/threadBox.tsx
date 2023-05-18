@@ -1,7 +1,8 @@
 import React from "react";
-
-import { getThreads } from "../../../../api";
+import { getThreads, getReplies } from "../../../../api";
 import ThreadItem from "./threadItem";
+import ReplyThread from "./replyThreadItem";
+// import Reply from "./replyThreadItem";
 
 type Thread = {
   _id: string;
@@ -12,16 +13,23 @@ type Thread = {
   content: string;
 };
 
-interface ReplyBoxProps {
-  topicId: string | undefined;
-  handleReplyClick: (displayName: string) => void; // ปรับปรุงที่นี่
+interface Reply {
+  _id: string;
+  threadId: string;
+  displayName: string;
+  datePost: string;
+  timePost: string;
+  content: string;
 }
 
-const ThreadBox: React.FC<ReplyBoxProps> = ({ topicId, handleReplyClick }) => {
+interface ThreadBoxProps {
+  topicId: string | undefined;
+  handleReplyClick: (displayName: string, threadId: string) => void;
+}
+
+const ThreadBox: React.FC<ThreadBoxProps> = ({ topicId, handleReplyClick }) => {
   const [threadsData, setThreadsData] = React.useState<Thread[]>([]);
-  const [replyTarget, setReplyTarget] = React.useState<string | null>(null);
-  const [replyOpen, setReplyOpen] = React.useState(false);
-  const [isThreadReply, setIsThreadReply] = React.useState(false);
+  const [repliesData, setRepliesData] = React.useState<Reply[]>([]);
 
   React.useEffect(() => {
     const fetchThreads = async () => {
@@ -31,42 +39,53 @@ const ThreadBox: React.FC<ReplyBoxProps> = ({ topicId, handleReplyClick }) => {
       }
     };
 
+    const fetchReplies = async () => {
+      const replies = await getReplies();
+      setRepliesData(replies);
+    };
+
     fetchThreads();
+    fetchReplies();
+    console.log(repliesData);
   }, []);
+
+  // React.useEffect(() => {
+  //   const fetchReplies = async () => {
+  //     const replies = await getReplies();
+  //     setRepliesData(replies);
+  //   };
+  //   fetchReplies();
+  //   console.log(repliesData);
+  // }, []);
 
   return (
     <>
       {threadsData.length > 0 ? (
         threadsData
           .filter((thread) => thread?.topicId === topicId)
-          .map((thread) => (
-            <ThreadItem
-              key={thread._id}
-              thread={thread}
-              handleReplyClick={handleReplyClick}
-            />
-          ))
+          .map((thread) => {
+            const relevantReplies = repliesData.filter(
+              (reply) => reply.threadId === thread._id
+            );
+
+            return (
+              <React.Fragment key={thread._id}>
+                <ThreadItem
+                  thread={thread}
+                  handleReplyClick={handleReplyClick}
+                />
+                {relevantReplies.length > 0 && (
+                  <ReplyThread replies={relevantReplies} />
+                )}
+              </React.Fragment>
+            );
+          })
       ) : (
-        <div>Test</div>
+        <div>No replies</div>
       )}
 
-      {/*If Have Reply*/}
-      <div className="flex flex-col mt-4 p-4 border-2 border-gray-300 bg-gray-100 rounded-xl shadow-lg">
-        <div className="flex items-center">
-          <div className="w-9 h-9 rounded-full bg-slate-800" />
-          <div className="flex flex-col ml-3">
-            <p className="font-bold">Test</p>
-          </div>
-        </div>
-        <div className="text-sm ml-12 mb-3 font-medium">Thank</div>
-        <div className="flex ml-12 text-xs">
-          <p className="">3 Days</p>
-          <p className="mx-2">Like</p>
-          <p className="">
-            Reply
-          </p>
-        </div>
-      </div>
+      {/* Display replies */}
+      {/* {repliesData.length > 0 && <ReplyThread replies={repliesData} />} */}
     </>
   );
 };

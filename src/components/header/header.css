@@ -21,11 +21,11 @@ span#username {
   background-color: var(--fireEngineRed);
 }
 
-#search {
+/* #search {
   background-color: var(--antiFlashWhite);
   border: 1px solid var(--coolGray);
   grid-template-columns: 5fr 0.1fr 2fr 0.7fr;
-}
+} */
 
 #vertical-hr {
   border-left: 1px solid var(--coolGray);

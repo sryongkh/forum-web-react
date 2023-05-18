@@ -1,6 +1,9 @@
 import React from "react";
 import Parser from "html-react-parser";
 
+import ReplyDialog from "../replyDialog/replyDialog";
+import { addReply } from "../../../../api";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart as fasHeart,
@@ -14,7 +17,7 @@ import {
   faBookmark as farBookmark,
 } from "@fortawesome/free-regular-svg-icons";
 
-// import ReplyThread from "./replyThreadItem";
+import Collapse from "@mui/material/Collapse";
 
 type Thread = {
   _id: string;
@@ -27,13 +30,14 @@ type Thread = {
 
 interface ThreadItemProps {
   thread: Thread;
-  handleReplyClick: (displayName: string) => void;
+  handleReplyClick: (displayName: string, threadId: string) => void;
 }
 
 const ThreadItem: React.FC<ThreadItemProps> = ({
   thread,
   handleReplyClick,
 }) => {
+  const sideMenuRef = React.useRef<HTMLDivElement | null>(null);
   const [isLiked, setIsLiked] = React.useState(false);
   const [isBookmark, setIsBookmark] = React.useState(false);
   const [isExpandReply, setIsExpandReply] = React.useState(false);
@@ -52,15 +56,56 @@ const ThreadItem: React.FC<ThreadItemProps> = ({
   };
 
   const handleThreadReplyClick = () => {
-    setReplyOpen((prevState: any) => {
-      const newState = !prevState;
-      return newState;
-    });
-    handleReplyClick(thread.displayName);
+    setReplyOpen((prevState: any) => !prevState);
   };
+
+  const handleThreadReplySubmit = (
+    replyContext: string,
+    uid: string,
+    displayName: string,
+    datePost: string,
+    timePost: string
+  ) => {
+    if (thread?._id)
+      addReply(thread?._id, replyContext, uid, displayName, datePost, timePost);
+    setReplyOpen(false);
+  };
+
+  const handleReplyClickClose = React.useCallback(() => {
+    setReplyOpen(false);
+  }, []);
 
   return (
     <>
+      <Collapse in={replyOpen}>
+        <div
+          id="side-menu-bg"
+          className={`overflow-hidden absolute inset-0 block w-full h-full transition-opacity duration-300 ${
+            replyOpen ? "bg-gray-400 bg-opacity-40" : "bg-transparent"
+          }`}
+        >
+          <div
+            ref={sideMenuRef}
+            id="side-menu"
+            className={`block w-2/6 h-full absolute right-0 bg-white p-4 transition-transform duration-300 ${
+              replyOpen
+                ? "transform translate-x-0"
+                : "transform translate-x-full"
+            }`}
+          >
+            {/* เมนูด้านข้าง */}
+
+            {/* Reply Dialog */}
+            {replyOpen && (
+              <ReplyDialog
+                target={thread?.displayName}
+                handleReplyClickClose={handleReplyClickClose}
+                handleSubmitReply={handleThreadReplySubmit}
+              />
+            )}
+          </div>
+        </div>
+      </Collapse>
       <div className="flex flex-col mb-4 p-4 bg-white rounded-xl shadow-lg">
         <div className="flex items-center">
           <div className="w-9 h-9 rounded-full bg-slate-800" />
@@ -115,7 +160,6 @@ const ThreadItem: React.FC<ThreadItemProps> = ({
           </div>
         </div>
       </div>
-      {/* <ReplyThread /> */}
     </>
   );
 };
