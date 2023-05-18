@@ -151,6 +151,9 @@ const CategoryPage: React.FC = () => {
           setSelectedTopicId("");
         }}
         topicId={selectedTopicId}
+        handleThreadReplyClick={(displayName, threadId) => {
+          // your logic here
+        }}
       />
 
       <NewTopicForm

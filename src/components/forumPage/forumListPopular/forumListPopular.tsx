@@ -64,6 +64,9 @@ const ForumListPopular = () => {
           setSelectedTopicId("");
         }}
         topicId={selectedTopicId}
+        handleThreadReplyClick={(displayName, threadId) => {
+          // your logic here
+        }}
       />
       <SelectTopicTab />
       <div className="h-full w-full">
